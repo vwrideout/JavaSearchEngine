@@ -11,7 +11,7 @@ import org.json.simple.parser.ParseException;
 /**
  * The Configuration class parses a JSON file containing configuration information and provides wrapper methods
  * to access the configuration data in the JSON object.
- * @author srollins
+ * @author Vincent Rideout
  *
  */
 public class Configuration {
@@ -27,13 +27,17 @@ public class Configuration {
 	/**
 	 * TODO: Instance variables to store shared information.
 	 */
+	private String inputPath;
+	private String outputPath;
+	private boolean digitDelimiter;
+	private Path configPath;
 	
 	/**
 	 * Instantiates a Configuration object.
 	 * @param path - the location of the file 			
 	 */
 	public Configuration(Path path) {
-		//TODO: Complete constructor.
+		configPath = path;
 	}
 	
 	/**
@@ -46,7 +50,14 @@ public class Configuration {
 	 * 				key; (5) the digitDelimiter value is not a boolean.
 	 */
 	public void init() throws InitializationException {
-
+		JSONObject jsonobject = null;
+		JSONParser parser = new JSONParser();
+		BufferedReader in = null;
+		in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));
+		jsonobject = (JSONObject) parser.parse(in);
+		inputPath = jsonobject.get(INPUT_PATH);
+		outputPath = jsonobject.get(OUTPUT_PATH);
+		digitDelimiter = jsonobject.get(DIGIT_DELIMITER);
 	}
 	
 
