@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
@@ -25,7 +26,7 @@ public class Configuration {
 	
 
 	/**
-	 * TODO: Instance variables to store shared information.
+	 * Instance variables to store shared information.
 	 */
 	private String inputPath;
 	private String outputPath;
@@ -50,14 +51,35 @@ public class Configuration {
 	 * 				key; (5) the digitDelimiter value is not a boolean.
 	 */
 	public void init() throws InitializationException {
+		//initialize variables
 		JSONObject jsonobject = null;
 		JSONParser parser = new JSONParser();
 		BufferedReader in = null;
-		in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));
-		jsonobject = (JSONObject) parser.parse(in);
-		inputPath = jsonobject.get(INPUT_PATH);
-		outputPath = jsonobject.get(OUTPUT_PATH);
-		digitDelimiter = jsonobject.get(DIGIT_DELIMITER);
+		//open and parse the file, throw InitializationException in place of other exceptions
+		try {
+			in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));
+		}catch(IOException ioe){
+			throw new InitializationException("Unable to open file");
+		}
+		try {
+			jsonobject = (JSONObject) parser.parse(in);
+		} catch (IOException | ParseException e) {
+			throw new InitializationException("Unable to parse file");
+		}
+		//check that we got the values we needed
+		if(!jsonobject.containsKey(INPUT_PATH))
+			throw new InitializationException("inputPath not specified");
+		if(!jsonobject.containsKey(DIGIT_DELIMITER))
+			throw new InitializationException("digitDelimiter not specified");
+		if(!(jsonobject.get(DIGIT_DELIMITER) instanceof Boolean))
+			throw new InitializationException("digitDelimiter not a boolean");
+		//if all went well, set data members
+		inputPath = (String)jsonobject.get(INPUT_PATH);
+		digitDelimiter = (boolean)jsonobject.get(DIGIT_DELIMITER);
+		if(jsonobject.containsKey(OUTPUT_PATH))
+			outputPath = (String)jsonobject.get(OUTPUT_PATH);
+		else
+			outputPath = null;
 	}
 	
 
@@ -66,7 +88,7 @@ public class Configuration {
 	 * @return - value associated with key inputPath
 	 */
 	public String getInputPath() {
-		return null;
+		return inputPath;
 	}
 	
 	/**
@@ -74,7 +96,7 @@ public class Configuration {
 	 * @return - value associated with key outputPath - null if no outputPath specified
 	 */
 	public String getOutputPath() {
-		return null;
+		return outputPath;
 	}
 
 	/**
@@ -82,7 +104,7 @@ public class Configuration {
 	 * @return - value associated with key digitDelimiter
 	 */
 	public boolean useDigitDelimiter() {
-		return false;
+		return digitDelimiter;
 	}
 	
 	
