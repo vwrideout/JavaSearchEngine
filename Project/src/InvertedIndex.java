@@ -8,7 +8,7 @@ import java.util.TreeMap;
 /**
  * Maintains a mapping from a word to a list of documents and positions in those documents where the word was found.
  * See the project description for more information: https://github.com/CS212-S15/projects/blob/master/specifications/project1.md
- * @author srollins
+ * @author Vincent Rideout
  *
  */
 public class InvertedIndex {
@@ -19,12 +19,13 @@ public class InvertedIndex {
 	 * 
 	 * Hint, think about how to use objects of type DocumentLocationMap.
 	 */
-
+	private TreeMap<String, DocumentLocationMap> map;
+	
 	/**
 	 * Constructor to instantiate a new InvertedIndex
 	 */
 	public InvertedIndex() {
-
+		map = new TreeMap<String, DocumentLocationMap>();
 	}
 	
 	/**
@@ -34,7 +35,10 @@ public class InvertedIndex {
 	 * @param fileName - the name of the document where the word is found
 	 * @param location - the position in the document where the word is found.
 	 */
-	public void add(String word, String fileName, int location) {		
+	public void add(String word, String fileName, int location) {
+		if(!map.containsKey(word))
+			map.put(word, new DocumentLocationMap(word));
+		map.get(word).addLocation(fileName, location);
 	}
 
 	/**
@@ -43,7 +47,10 @@ public class InvertedIndex {
 	 * of the index. Your output must match exactly to pass all tests.
 	 */
 	public String toString() {		
-		return null;
+		StringBuffer s = new StringBuffer();
+		for(String word: map.keySet())
+			s.append(word + "\n" + map.get(word).toString() + "\n");
+		return s.toString();
 	}	
 	
 	/**
