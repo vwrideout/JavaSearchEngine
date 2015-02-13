@@ -23,4 +23,33 @@ public class InvertedIndexBuilder {
 	
 	
 	**/
+	private String directory;
+	private InvertedIndex index;
+	private boolean digitDelimiter;
+	
+	public InvertedIndexBuilder(String directory, boolean digitDelimiter){
+		this.directory = directory;
+		this.digitDelimiter = digitDelimiter;
+	}
+	
+	public InvertedIndex build(){
+		index = new InvertedIndex();
+		String exp;
+		if(digitDelimiter)
+			exp = "[^a-zA-Z]+";
+		else
+			exp = "[^a-zA-Z0-9]+";
+		Pattern pattern = Pattern.compile(exp);
+		exp = "[*+.[Tt][Xx][Tt]";
+		processFile(directory, pattern, Pattern.compile(exp));
+		return index;
+	}
+	
+	private void processFile(String s, Pattern pattern, Pattern txt){
+		for each entry in directory
+			if is directory
+				processFile(file)
+			elseif is .txt file
+				read file and add words to index
+	}
 }
