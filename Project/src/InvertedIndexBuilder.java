@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -40,16 +41,20 @@ public class InvertedIndexBuilder {
 		else
 			exp = "[^a-zA-Z0-9]+";
 		Pattern pattern = Pattern.compile(exp);
-		exp = "[*+.[Tt][Xx][Tt]";
-		processFile(directory, pattern, Pattern.compile(exp));
+		processDir(directory, pattern);
 		return index;
 	}
 	
-	private void processFile(String s, Pattern pattern, Pattern txt){
-		for each entry in directory
-			if is directory
-				processFile(file)
-			elseif is .txt file
-				read file and add words to index
+	private void processDir(File dir, Pattern pattern){
+		for(File f: dir.listFiles()){
+			if(f.isDirectory())
+				processDir(f, pattern);
+			else if(f.getName().toLowerCase().endsWith(".txt"))
+				processFile(f, pattern);
+		}
+	}
+	
+	private void processFile(File file, Pattern pattern){
+		blah
 	}
 }
