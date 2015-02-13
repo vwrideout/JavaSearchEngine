@@ -4,7 +4,7 @@ import java.util.TreeSet;
 /**
  * Stores a mapping from a document (a file name) to a set of integers that represent the
  * locations where a word appears in the document.
- * @author srollins
+ * @author Vincent Rideout
  *
  */
 public class DocumentLocationMap {
@@ -13,7 +13,8 @@ public class DocumentLocationMap {
 	 * It is up to you to decide what the data members for this class will look like, but
 	 * make sure to think about efficiency!
 	 */
-	
+	private TreeMap<String, TreeSet<Integer>> map;
+	private String word;
 	
 	/**
 	 * Intitialize an empty map.
@@ -21,6 +22,8 @@ public class DocumentLocationMap {
 	 * 					for convenience
 	 */
 	public DocumentLocationMap(String word) {
+		map = new TreeMap<String, TreeSet<Integer>>();
+		this.word = word;
 	}
 	
 	
@@ -30,7 +33,10 @@ public class DocumentLocationMap {
 	 * @param fileName - the name of the file where the word appears.
 	 * @param location - the location in the file where the word appears.
 	 */
-	public void addLocation(String fileName, int location) {		
+	public void addLocation(String fileName, int location) {	
+		if(!map.containsKey(fileName))
+			map.put(fileName, new TreeSet<Integer>());
+		map.get(fileName).add(location);
 	}
 	
 	/**
@@ -42,11 +48,17 @@ public class DocumentLocationMap {
 	 * @return
 	 */
 	public boolean contains(String fileName, int location) {
-		return false;
+		return(map.containsKey(fileName) && map.get(fileName).contains(location));
 	}
 	
 	private String toString(String fileName) {
-		return null;
+		StringBuffer s = new StringBuffer("\"" + fileName + "\"");
+		if(map.containsKey(fileName)){
+			for(Integer i: map.get(fileName))
+				s.append(", " + i);
+		}
+		s.append("\n");
+		return s.toString();
 	}
 	
 	/**
@@ -62,7 +74,10 @@ public class DocumentLocationMap {
 	 * @return
 	 */
 	public String toString() {
-		return null;
+		StringBuffer s = new StringBuffer();
+		for(String fileName: map.keySet())
+			s.append(toString(fileName));
+		return s.toString();
 	}
 	
 	public static void main(String[] args) {
@@ -75,7 +90,6 @@ public class DocumentLocationMap {
 		//map.addLocation("test2", 1);
 		map.addLocation("test3", 19);
 		System.out.println(map);
-		
 	}
 	
 }
