@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -25,36 +26,45 @@ public class InvertedIndexBuilder {
 	
 	**/
 	private String directory;
+	private Pattern delimiter;
 	private InvertedIndex index;
-	private boolean digitDelimiter;
 	
 	public InvertedIndexBuilder(String directory, boolean digitDelimiter){
-		this.directory = directory;
-		this.digitDelimiter = digitDelimiter;
-	}
-	
-	public InvertedIndex build(){
-		index = new InvertedIndex();
+		this.directory = directory;	
 		String exp;
 		if(digitDelimiter)
 			exp = "[^a-zA-Z]+";
 		else
 			exp = "[^a-zA-Z0-9]+";
-		Pattern pattern = Pattern.compile(exp);
-		processDir(directory, pattern);
+		this.delimiter = Pattern.compile(exp);		
+	}
+	
+	public InvertedIndex build(){
+		System.out.println(directory);
+		index = new InvertedIndex();
+		processDir(new File(directory));
 		return index;
 	}
 	
-	private void processDir(File dir, Pattern pattern){
+	private void processDir(File dir){
 		for(File f: dir.listFiles()){
 			if(f.isDirectory())
-				processDir(f, pattern);
+				processDir(f);
 			else if(f.getName().toLowerCase().endsWith(".txt"))
-				processFile(f, pattern);
+				processFile(f, f.getName());
 		}
 	}
 	
-	private void processFile(File file, Pattern pattern){
-		blah
+	private void processFile(File file, String fileName){
+		Scanner fileScanner;
+		int count = 1;
+		try {
+			fileScanner = new Scanner(file).useDelimiter(delimiter);
+			while(fileScanner.hasNext())
+				index.add(fileScanner.next().toLowerCase(), fileName, count++);
+			fileScanner.close();
+		} catch (FileNotFoundException ffe) {
+			System.out.println("Unable to open file.");
+		}		
 	}
 }

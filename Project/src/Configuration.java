@@ -107,6 +107,9 @@ public class Configuration {
 		return digitDelimiter;
 	}
 	
+	public String toString(){
+		return (inputPath + " " + outputPath + " " + digitDelimiter + " " + configPath);
+	}
 	
 	/**
 	 * Simple main method used for in-progress testing of Configuration class only.
