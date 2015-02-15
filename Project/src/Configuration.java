@@ -63,6 +63,7 @@ public class Configuration {
 		}
 		try {
 			jsonobject = (JSONObject) parser.parse(in);
+			in.close();
 		} catch (IOException | ParseException e) {
 			throw new InitializationException("Unable to parse file");
 		}

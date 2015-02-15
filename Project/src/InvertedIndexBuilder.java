@@ -25,11 +25,11 @@ public class InvertedIndexBuilder {
 	
 	
 	**/
-	private String directory;
+	private File directory;
 	private Pattern delimiter;
 	private InvertedIndex index;
 	
-	public InvertedIndexBuilder(String directory, boolean digitDelimiter){
+	public InvertedIndexBuilder(File directory, boolean digitDelimiter){
 		this.directory = directory;	
 		String exp;
 		if(digitDelimiter)
@@ -42,7 +42,7 @@ public class InvertedIndexBuilder {
 	public InvertedIndex build(){
 		System.out.println(directory);
 		index = new InvertedIndex();
-		processDir(new File(directory));
+		processDir(directory);
 		return index;
 	}
 	
@@ -51,7 +51,7 @@ public class InvertedIndexBuilder {
 			if(f.isDirectory())
 				processDir(f);
 			else if(f.getName().toLowerCase().endsWith(".txt"))
-				processFile(f, f.getName());
+				processFile(f, f.getPath());
 		}
 	}
 	
