@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * Class that builds the InvertedIndex.
  * 
- * @author srollins
+ * @author Vincent Rideout
  *
  */
 public class InvertedIndexBuilder {
@@ -31,6 +31,7 @@ public class InvertedIndexBuilder {
 	
 	public InvertedIndexBuilder(File directory, boolean digitDelimiter){
 		this.directory = directory;	
+		//different regex's depending on whether digits should be delimiters
 		String exp;
 		if(digitDelimiter)
 			exp = "[^a-zA-Z]+";
@@ -40,11 +41,12 @@ public class InvertedIndexBuilder {
 	}
 	
 	public InvertedIndex build(){
-		System.out.println(directory);
 		index = new InvertedIndex();
 		processDir(directory);
 		return index;
 	}
+	
+	//recursively traverses all .txt files and subdirectories
 	
 	private void processDir(File dir){
 		for(File f: dir.listFiles()){
@@ -54,6 +56,10 @@ public class InvertedIndexBuilder {
 				processFile(f, f.getPath());
 		}
 	}
+	
+	/**reads the contents of a .txt file, adding them to the InvertedIndex at location 
+	 * denoted by the running wordcount. No exceptions thrown in case of I/O errors.
+	 */
 	
 	private void processFile(File file, String fileName){
 		Scanner fileScanner;
