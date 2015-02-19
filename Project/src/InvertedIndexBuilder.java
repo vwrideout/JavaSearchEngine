@@ -49,6 +49,13 @@ public class InvertedIndexBuilder {
 	//recursively traverses all .txt files and subdirectories
 	
 	private void processDir(File dir){
+		
+		/* 
+		I recommend using Path rather than File to be consistent with 
+		use of Java 8.
+		see: http://docs.oracle.com/javase/tutorial/essential/io/dirs.html
+		*/
+		
 		for(File f: dir.listFiles()){
 			if(f.isDirectory())
 				processDir(f);

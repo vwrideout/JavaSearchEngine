@@ -22,6 +22,7 @@ public class DocumentLocationMap {
 	 * 					for convenience
 	 */
 	public DocumentLocationMap(String word) {
+		/* I recommend being consistent with your use of the this keyword. */
 		map = new TreeMap<String, TreeSet<Integer>>();
 		this.word = word;
 	}

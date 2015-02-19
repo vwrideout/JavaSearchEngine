@@ -21,6 +21,10 @@ public class Driver {
 		try{
 			config.init();
 		}catch (InitializationException ie){
+			/*
+			A better approach would be to exit the program here rather than indent all of
+			the main login in an if block.
+			*/
 			goodinit = false;
 		}
 		if(goodinit){
@@ -31,6 +35,10 @@ public class Driver {
 				InvertedIndex index = builder.build();
 				//if output path received, print the toString of the index to it.
 				if(config.getOutputPath() != null){
+					/*
+					Let's discuss your choice not to implement the InvertedIndex
+					printToFile method during your code review.
+					*/
 					PrintWriter pw = new PrintWriter(config.getOutputPath());
 					pw.print(index.toString());
 					pw.close();
