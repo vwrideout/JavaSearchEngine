@@ -1,6 +1,7 @@
+/Configuration.class
 /ConfigurationTest.class
 /DocumentLocationMapTest.class
-/IndexTest$IndexArgumentTest.class
+/IndexTest$IndexConfigurationTest.class
 /IndexTest$IndexOutputTest.class
 /IndexTest.class
 /InvertedIndexTest.class
