@@ -60,11 +60,14 @@ public class InvertedIndexBuilder {
 	private void processFile(Path file, String fileName){
 		Scanner fileScanner;
 		int count = 1;
+		int totalwords = 1;
 		try {
 			fileScanner = new Scanner(file).useDelimiter(delimiter);
 			while(fileScanner.hasNext()){
 				index.add(fileScanner.next().toLowerCase(), fileName, count++);
+				totalwords++;
 			}
+			index.addWordsInDoc(fileName, totalwords);
 			fileScanner.close();
 		} catch (IOException ioe) {
 			System.out.println("Unable to open file.");

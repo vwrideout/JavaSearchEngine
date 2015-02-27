@@ -1,4 +1,3 @@
-import java.nio.file.Path;
 import java.util.TreeMap;
 
 /**
@@ -10,14 +9,24 @@ import java.util.TreeMap;
 public class InvertedIndex {
 
 	private TreeMap<String, DocumentLocationMap> map;
+	private TreeMap<String, Integer> wordsInDoc;
 	
 	/**
 	 * Constructor to instantiate a new InvertedIndex
 	 */
 	public InvertedIndex() {
 		this.map = new TreeMap<String, DocumentLocationMap>();
+		this.wordsInDoc = new TreeMap<String, Integer>();
 	}
 	
+	/**
+	 * Store the total number of words contained in a document.
+	 * @param fileName - name of the document
+	 * @param num - total number of words in the document
+	 */
+	public void addWordsInDoc(String fileName, int num){
+		wordsInDoc.put(fileName, num);
+	}
 	/**
 	 * Adds a new word to the index. If the word is already in the index, the method simply adds a new document/position.
 	 * 
