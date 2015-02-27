@@ -1,5 +1,7 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.DirectoryStream;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -11,28 +13,21 @@ import java.util.regex.Pattern;
  */
 public class InvertedIndexBuilder {
 
-	/**
-	
-	It is up to you to design this class. 
-	This class will need to recursively traverse an input directory and any time it finds a file
-	that has the .txt extension (case insensitive!), it will process the file and add all words to 
-	the InvertedIndex.
-	
-	
-	**/
-	private File directory;
+	private Path directory;
 	private Pattern delimiter;
 	private InvertedIndex index;
 	
-	public InvertedIndexBuilder(File directory, boolean digitDelimiter){
+	/**
+	 * Constructor to instantiate a new InvertedIndexBuilder
+	 * @param directory 
+	 * @param digitDelimiter
+	 */
+	public InvertedIndexBuilder(Path directory, boolean digitDelimiter){
 		this.directory = directory;	
-		//different regex's depending on whether digits should be delimiters
-		String exp;
 		if(digitDelimiter)
-			exp = "[^a-zA-Z]+";
+			this.delimiter = Pattern.compile("[^a-zA-Z]+");
 		else
-			exp = "[^a-zA-Z0-9]+";
-		this.delimiter = Pattern.compile(exp);		
+			this.delimiter = Pattern.compile("[^a-zA-Z0-9]+");
 	}
 	
 	public InvertedIndex build(){
@@ -43,19 +38,18 @@ public class InvertedIndexBuilder {
 	
 	//recursively traverses all .txt files and subdirectories
 	
-	private void processDir(File dir){
-		
-		/* 
-		I recommend using Path rather than File to be consistent with 
-		use of Java 8.
-		see: http://docs.oracle.com/javase/tutorial/essential/io/dirs.html
-		*/
-		
-		for(File f: dir.listFiles()){
-			if(f.isDirectory())
-				processDir(f);
-			else if(f.getName().toLowerCase().endsWith(".txt"))
-				processFile(f, f.getPath());
+	private void processDir(Path dir){
+		try(DirectoryStream<Path> stream = Files.newDirectoryStream(dir)){
+			for(Path file: stream){
+				if(file.toFile().isDirectory()){
+					processDir(file);
+				}
+				else if(file.toString().toLowerCase().endsWith(".txt")){
+					processFile(file, file.toString());
+				}
+			}
+		} catch (IOException ioe) {
+			System.out.println("Error processing directory.");
 		}
 	}
 	
@@ -63,15 +57,16 @@ public class InvertedIndexBuilder {
 	 * denoted by the running wordcount. No exceptions thrown in case of I/O errors.
 	 */
 	
-	private void processFile(File file, String fileName){
+	private void processFile(Path file, String fileName){
 		Scanner fileScanner;
 		int count = 1;
 		try {
 			fileScanner = new Scanner(file).useDelimiter(delimiter);
-			while(fileScanner.hasNext())
+			while(fileScanner.hasNext()){
 				index.add(fileScanner.next().toLowerCase(), fileName, count++);
+			}
 			fileScanner.close();
-		} catch (FileNotFoundException ffe) {
+		} catch (IOException ioe) {
 			System.out.println("Unable to open file.");
 		}		
 	}

@@ -38,7 +38,7 @@ public class Configuration {
 	 * @param path - the location of the file 			
 	 */
 	public Configuration(Path path) {
-		configPath = path;
+		this.configPath = path;
 	}
 	
 	/**
@@ -51,11 +51,9 @@ public class Configuration {
 	 * 				key; (5) the digitDelimiter value is not a boolean.
 	 */
 	public void init() throws InitializationException {
-		//initialize variables
 		JSONObject jsonobject = null;
 		JSONParser parser = new JSONParser();
 		BufferedReader in = null;
-		//open and parse the file, throw InitializationException in place of other exceptions
 		try {
 			in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));
 		}catch(IOException ioe){
@@ -67,20 +65,29 @@ public class Configuration {
 		} catch (IOException | ParseException e) {
 			throw new InitializationException("Unable to parse file");
 		}
-		//check that we got the values we needed
+		validate(jsonobject);
+		inputPath = (String)jsonobject.get(INPUT_PATH);
+		digitDelimiter = (boolean)jsonobject.get(DIGIT_DELIMITER);
+		if(jsonobject.containsKey(OUTPUT_PATH)){
+			outputPath = (String)jsonobject.get(OUTPUT_PATH);
+		}
+		else{
+			outputPath = null;
+		}
+	}
+	
+	/**
+	 * Helper method to confirm good values in the JSON file.
+	 * @param jsonobject
+	 * @throws InitializationException
+	 */
+	private void validate(JSONObject jsonobject) throws InitializationException{
 		if(!jsonobject.containsKey(INPUT_PATH))
 			throw new InitializationException("inputPath not specified");
 		if(!jsonobject.containsKey(DIGIT_DELIMITER))
 			throw new InitializationException("digitDelimiter not specified");
 		if(!(jsonobject.get(DIGIT_DELIMITER) instanceof Boolean))
 			throw new InitializationException("digitDelimiter not a boolean");
-		//if all went well, set data members
-		inputPath = (String)jsonobject.get(INPUT_PATH);
-		digitDelimiter = (boolean)jsonobject.get(DIGIT_DELIMITER);
-		if(jsonobject.containsKey(OUTPUT_PATH))
-			outputPath = (String)jsonobject.get(OUTPUT_PATH);
-		else
-			outputPath = null;
 	}
 	
 

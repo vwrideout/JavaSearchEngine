@@ -9,19 +9,13 @@ import java.util.TreeMap;
  */
 public class InvertedIndex {
 
-	/**
-	 * It is up to you to decide what the data members for this class will look like, but
-	 * make sure to think about efficiency!
-	 * 
-	 * Hint, think about how to use objects of type DocumentLocationMap.
-	 */
 	private TreeMap<String, DocumentLocationMap> map;
 	
 	/**
 	 * Constructor to instantiate a new InvertedIndex
 	 */
 	public InvertedIndex() {
-		map = new TreeMap<String, DocumentLocationMap>();
+		this.map = new TreeMap<String, DocumentLocationMap>();
 	}
 	
 	/**
@@ -32,8 +26,9 @@ public class InvertedIndex {
 	 * @param location - the position in the document where the word is found.
 	 */
 	public void add(String word, String fileName, int location) {
-		if(!map.containsKey(word))
+		if(!map.containsKey(word)){
 			map.put(word, new DocumentLocationMap(word));
+		}
 		map.get(word).addLocation(fileName, location);
 	}
 
@@ -44,18 +39,11 @@ public class InvertedIndex {
 	 */
 	public String toString() {		
 		StringBuffer s = new StringBuffer();
-		for(String word: map.keySet())
+		for(String word: map.keySet()){
 			s.append(word + "\n" + map.get(word).toString() + "\n");
+		}
 		return s.toString();
 	}	
-	
-	/**
-	 * Optional method. I used this method to save the string representation of the index to a file.
-	 * @param fileName
-	 */
-	public void printToFile(Path fileName) {
-	}
-	
 
 	public static void main(String[] args) {	
 		InvertedIndex ii = new InvertedIndex();

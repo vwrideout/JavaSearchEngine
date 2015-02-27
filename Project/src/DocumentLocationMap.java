@@ -9,10 +9,6 @@ import java.util.TreeSet;
  */
 public class DocumentLocationMap {
 
-	/**
-	 * It is up to you to decide what the data members for this class will look like, but
-	 * make sure to think about efficiency!
-	 */
 	private TreeMap<String, TreeSet<Integer>> map;
 	private String word;
 	
@@ -22,8 +18,7 @@ public class DocumentLocationMap {
 	 * 					for convenience
 	 */
 	public DocumentLocationMap(String word) {
-		/* I recommend being consistent with your use of the this keyword. */
-		map = new TreeMap<String, TreeSet<Integer>>();
+		this.map = new TreeMap<String, TreeSet<Integer>>();
 		this.word = word;
 	}
 	
@@ -35,8 +30,9 @@ public class DocumentLocationMap {
 	 * @param location - the location in the file where the word appears.
 	 */
 	public void addLocation(String fileName, int location) {	
-		if(!map.containsKey(fileName))
+		if(!map.containsKey(fileName)){
 			map.put(fileName, new TreeSet<Integer>());
+		}
 		map.get(fileName).add(location);
 	}
 	
@@ -52,6 +48,11 @@ public class DocumentLocationMap {
 		return(map.containsKey(fileName) && map.get(fileName).contains(location));
 	}
 	
+	/**
+	 * Helper method for other toString method. 
+	 * @param fileName
+	 * @return - string representation of one file and the words mapped to it.
+	 */
 	private String toString(String fileName) {
 		StringBuffer s = new StringBuffer("\"" + fileName + "\"");
 		if(map.containsKey(fileName)){
@@ -76,8 +77,9 @@ public class DocumentLocationMap {
 	 */
 	public String toString() {
 		StringBuffer s = new StringBuffer();
-		for(String fileName: map.keySet())
+		for(String fileName: map.keySet()){
 			s.append(toString(fileName));
+		}
 		return s.toString();
 	}
 	

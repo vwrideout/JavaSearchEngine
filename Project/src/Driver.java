@@ -1,4 +1,3 @@
-import java.io.File;
 import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -13,36 +12,21 @@ import java.nio.file.Path;
 public class Driver {
 
 	public static void main(String[] args) throws Exception {
-		//open json file
 		Path path = FileSystems.getDefault().getPath("config.json");
 		Configuration config = new Configuration(path);
-		boolean goodinit = true;
-		//read json file, aborting program if exceptions are thrown
 		try{
 			config.init();
 		}catch (InitializationException ie){
-			/*
-			A better approach would be to exit the program here rather than indent all of
-			the main login in an if block.
-			*/
-			goodinit = false;
+			return;
 		}
-		if(goodinit){
-			//read the input file into an InvertedIndex
-			File inputDir = new File(config.getInputPath());
-			if(inputDir.isDirectory()){	
-				InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter());
-				InvertedIndex index = builder.build();
-				//if output path received, print the toString of the index to it.
-				if(config.getOutputPath() != null){
-					/*
-					Let's discuss your choice not to implement the InvertedIndex
-					printToFile method during your code review.
-					*/
-					PrintWriter pw = new PrintWriter(config.getOutputPath());
-					pw.print(index.toString());
-					pw.close();
-				}
+		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
+		if(inputDir.toFile().isDirectory()){	
+			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter());
+			InvertedIndex index = builder.build();
+			if(config.getOutputPath() != null){
+				PrintWriter pw = new PrintWriter(config.getOutputPath());
+				pw.print(index.toString());
+				pw.close();
 			}
 		}
 	}
