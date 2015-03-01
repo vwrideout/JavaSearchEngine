@@ -23,6 +23,8 @@ public class Configuration {
 	public static final String INPUT_PATH = "inputPath";
 	public static final String OUTPUT_PATH = "outputPath";
 	public static final String DIGIT_DELIMITER = "digitDelimiter";	
+	public static final String SEARCH_PATH = "searchPath";
+	public static final String SEARCH_OUTPUT_PATH = "searchOutputPath";
 	
 
 	/**
@@ -32,6 +34,8 @@ public class Configuration {
 	private String outputPath;
 	private boolean digitDelimiter;
 	private Path configPath;
+	private String searchPath;
+	private String searchOutputPath;
 	
 	/**
 	 * Instantiates a Configuration object.
@@ -74,6 +78,18 @@ public class Configuration {
 		else{
 			outputPath = null;
 		}
+		if(jsonobject.containsKey(SEARCH_PATH)){
+			searchPath = (String)jsonobject.get(SEARCH_PATH);
+		}
+		else{
+			searchPath = null;
+		}
+		if(jsonobject.containsKey(SEARCH_OUTPUT_PATH)){
+			searchOutputPath = (String)jsonobject.get(SEARCH_OUTPUT_PATH);
+		}
+		else{
+			searchOutputPath = null;
+		}
 	}
 	
 	/**
@@ -106,6 +122,14 @@ public class Configuration {
 	public String getOutputPath() {
 		return outputPath;
 	}
+	
+	public String getSearchPath() {
+		return searchPath;
+	}
+	
+	public String getSearchOutputPath() {
+		return searchOutputPath;
+	}
 
 	/**
 	 * Returns the value of associated with the digitDelimiter key in the JSON configuration file.
@@ -116,7 +140,7 @@ public class Configuration {
 	}
 	
 	public String toString(){
-		return (inputPath + " " + outputPath + " " + digitDelimiter + " " + configPath);
+		return (inputPath + " " + outputPath + " " + searchPath + " " + searchOutputPath + " "+ digitDelimiter + " " + configPath);
 	}
 	
 	/**

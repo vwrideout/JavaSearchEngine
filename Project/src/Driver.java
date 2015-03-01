@@ -20,12 +20,20 @@ public class Driver {
 			return;
 		}
 		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
+		PrintWriter pw;
 		if(inputDir.toFile().isDirectory()){	
 			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter());
 			InvertedIndex index = builder.build();
 			if(config.getOutputPath() != null){
-				PrintWriter pw = new PrintWriter(config.getOutputPath());
+				pw = new PrintWriter(config.getOutputPath());
 				pw.print(index.toString());
+				pw.close();
+			}
+			if(config.getSearchPath() != null && config.getSearchOutputPath() != null){
+				Path searchPath = FileSystems.getDefault().getPath(config.getSearchPath());
+				InvertedIndexSearcher searcher = new InvertedIndexSearcher(searchPath, index);
+				pw = new PrintWriter(config.getSearchOutputPath());
+				pw.print(searcher.toString());
 				pw.close();
 			}
 		}

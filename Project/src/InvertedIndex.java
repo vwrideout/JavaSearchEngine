@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -9,14 +10,14 @@ import java.util.TreeMap;
 public class InvertedIndex {
 
 	private TreeMap<String, DocumentLocationMap> map;
-	private TreeMap<String, Integer> wordsInDoc;
+	private HashMap<String, Integer> wordcounts;
 	
 	/**
 	 * Constructor to instantiate a new InvertedIndex
 	 */
 	public InvertedIndex() {
 		this.map = new TreeMap<String, DocumentLocationMap>();
-		this.wordsInDoc = new TreeMap<String, Integer>();
+		this.wordcounts = new HashMap<String, Integer>();
 	}
 	
 	/**
@@ -24,8 +25,8 @@ public class InvertedIndex {
 	 * @param fileName - name of the document
 	 * @param num - total number of words in the document
 	 */
-	public void addWordsInDoc(String fileName, int num){
-		wordsInDoc.put(fileName, num);
+	public void addWordcount(String fileName, int num) {
+		wordcounts.put(fileName, num);
 	}
 	/**
 	 * Adds a new word to the index. If the word is already in the index, the method simply adds a new document/position.
@@ -39,6 +40,29 @@ public class InvertedIndex {
 			map.put(word, new DocumentLocationMap(word));
 		}
 		map.get(word).addLocation(fileName, location);
+	}
+	
+	public DocumentResultList search(String query) {
+		DocumentResultList output = new DocumentResultList(query);
+		DocumentResult dr = null;
+		String[] queries = query.split("\\s");
+		double tf, idf;
+		for(String word: queries){
+			if(map.containsKey(word)){
+				for(String file: map.get(word).docNames()){
+					tf = (double)map.get(word).totalAppearances(file) / wordcounts.get(file);
+					idf = Math.log10((double)wordcounts.keySet().size() / map.get(word).docNames().size());
+					dr = output.contains(file);
+					if(dr == null){
+						output.add(new DocumentResult(file, tf/idf));
+					}
+					else{
+						dr.setScore(dr.getScore() + tf/idf);
+					}
+				}
+			}
+		}
+		return output;
 	}
 
 	/**

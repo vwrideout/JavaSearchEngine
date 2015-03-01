@@ -67,7 +67,7 @@ public class InvertedIndexBuilder {
 				index.add(fileScanner.next().toLowerCase(), fileName, count++);
 				totalwords++;
 			}
-			index.addWordsInDoc(fileName, totalwords);
+			index.addWordcount(fileName, totalwords);
 			fileScanner.close();
 		} catch (IOException ioe) {
 			System.out.println("Unable to open file.");

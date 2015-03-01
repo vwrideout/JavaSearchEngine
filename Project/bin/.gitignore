@@ -12,3 +12,7 @@
 /SearchTest$SearchOutputTest.class
 /SearchTest.class
 /configurations/
+/DocumentResult.class
+/DocumentResultList.class
+/InvertedIndexSearcher.class
+/config.json

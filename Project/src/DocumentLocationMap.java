@@ -1,3 +1,4 @@
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -22,7 +23,17 @@ public class DocumentLocationMap {
 		this.word = word;
 	}
 	
+	public int totalAppearances(String fileName){
+		if(map.containsKey(fileName)){
+			return map.get(fileName).size();
+		}
+		return 0;
+	}
 	
+	public Set<String> docNames(){
+		return map.keySet();
+	}
+
 	/**
 	 * Add a new location for a given file. The first word in a file is at location 1, the second
 	 * word at location 2, and so on.
