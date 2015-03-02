@@ -60,7 +60,7 @@ public class InvertedIndexBuilder {
 	private void processFile(Path file, String fileName){
 		Scanner fileScanner;
 		int count = 1;
-		int totalwords = 1;
+		int totalwords = 0;
 		try {
 			fileScanner = new Scanner(file).useDelimiter(delimiter);
 			while(fileScanner.hasNext()){

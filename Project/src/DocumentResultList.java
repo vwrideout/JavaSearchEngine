@@ -13,13 +13,22 @@ public class DocumentResultList extends TreeSet<DocumentResult>{
 		this.query = query;
 	}
 	
-	public DocumentResult contains(String fileName){
+	public boolean contains(String fileName){
 		for(DocumentResult dr: this){
 			if(fileName == dr.getName()){
-				return dr;
+				return true;
 			}
 		}
-		return null;
+		return false;
+	}
+	
+	public void updateScore(String fileName, double delta){
+		for(DocumentResult dr: this){
+			if(fileName == dr.getName()){
+				dr.setScore(dr.getScore() + delta);
+				return;
+			}
+		}
 	}
 	
 	public String toString(){

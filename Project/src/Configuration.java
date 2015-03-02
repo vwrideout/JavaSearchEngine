@@ -57,16 +57,13 @@ public class Configuration {
 	public void init() throws InitializationException {
 		JSONObject jsonobject = null;
 		JSONParser parser = new JSONParser();
-		BufferedReader in = null;
-		try {
-			in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));
-		}catch(IOException ioe){
+		try (BufferedReader in = Files.newBufferedReader(configPath, Charset.forName("UTF-8"));){
+			jsonobject = (JSONObject) parser.parse(in);
+		}
+		catch(IOException ioe){
 			throw new InitializationException("Unable to open file");
 		}
-		try {
-			jsonobject = (JSONObject) parser.parse(in);
-			in.close();
-		} catch (IOException | ParseException e) {
+		catch(ParseException e){
 			throw new InitializationException("Unable to parse file");
 		}
 		validate(jsonobject);

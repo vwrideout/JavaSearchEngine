@@ -8,8 +8,8 @@ input\gutenberg\2701.txt
 input\gutenberg\11.txt
 input\gutenberg\1342.txt
 input\rfcs\rfc6841.txt
-input\gutenberg\1322.txt
 input\rfcs\rfc6797.txt
+input\gutenberg\1322.txt
 input\rfcs\rfc6805.txt
 input\rfcs\rfc475.txt
 input\rfcs\rfc6819.txt
@@ -26,10 +26,10 @@ input\gutenberg\11.txt
 input\gutenberg\4300.txt
 input\gutenberg\98.txt
 input\gutenberg\2701.txt
-input\gutenberg\1661.txt
 input\rfcs\rfc6838.txt
-input\rfcs\rfc6797.txt
+input\gutenberg\1661.txt
 input\rfcs\rfc6819.txt
+input\rfcs\rfc6797.txt
 input\rfcs\rfc6805.txt
 input\rfcs\rfc3031.txt
 input\rfcs\rfc6841.txt

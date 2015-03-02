@@ -29,10 +29,14 @@ public class Driver {
 				pw.print(index.toString());
 				pw.close();
 			}
-			if(config.getSearchPath() != null && config.getSearchOutputPath() != null){
+			if(config.getSearchPath() != null){
 				Path searchPath = FileSystems.getDefault().getPath(config.getSearchPath());
 				InvertedIndexSearcher searcher = new InvertedIndexSearcher(searchPath, index);
-				pw = new PrintWriter(config.getSearchOutputPath());
+				String outputFilename = "results/default.txt";
+				if(config.getSearchOutputPath() != null){
+					outputFilename = config.getSearchOutputPath();
+				}
+				pw = new PrintWriter(outputFilename);
 				pw.print(searcher.toString());
 				pw.close();
 			}

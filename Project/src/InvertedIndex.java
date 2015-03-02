@@ -44,7 +44,6 @@ public class InvertedIndex {
 	
 	public DocumentResultList search(String query) {
 		DocumentResultList output = new DocumentResultList(query);
-		DocumentResult dr = null;
 		String[] queries = query.split("\\s");
 		double tf, idf;
 		for(String word: queries){
@@ -52,12 +51,11 @@ public class InvertedIndex {
 				for(String file: map.get(word).docNames()){
 					tf = (double)map.get(word).totalAppearances(file) / wordcounts.get(file);
 					idf = Math.log10((double)wordcounts.keySet().size() / map.get(word).docNames().size());
-					dr = output.contains(file);
-					if(dr == null){
-						output.add(new DocumentResult(file, tf/idf));
+					if(!output.contains(file)){
+						output.add(new DocumentResult(file, tf*idf));
 					}
 					else{
-						dr.setScore(dr.getScore() + tf/idf);
+						output.updateScore(file, tf*idf);
 					}
 				}
 			}
