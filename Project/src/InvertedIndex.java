@@ -44,7 +44,7 @@ public class InvertedIndex {
 	
 	public DocumentResultList search(String query) {
 		DocumentResultList output = new DocumentResultList(query);
-		String[] queries = query.split("\\s");
+		String[] queries = query.split("\\s+");
 		double tf, idf;
 		for(String word: queries){
 			if(map.containsKey(word)){

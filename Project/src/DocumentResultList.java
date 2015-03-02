@@ -36,7 +36,8 @@ public class DocumentResultList extends TreeSet<DocumentResult>{
 		StringBuffer s = new StringBuffer();
 		s.append(query + "\n");
 		while(iter.hasNext()){
-			s.append(iter.next().getName() + "\n");
+			DocumentResult dr = iter.next();
+			s.append(dr.getName() + ": " + dr.getScore() + "\n");
 		}
 		s.append("\n");
 		return s.toString();
