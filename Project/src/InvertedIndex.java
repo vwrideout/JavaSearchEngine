@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.TreeMap;
 
@@ -60,6 +61,7 @@ public class InvertedIndex {
 				}
 			}
 		}
+		Collections.sort(output, Collections.reverseOrder());
 		return output;
 	}
 
