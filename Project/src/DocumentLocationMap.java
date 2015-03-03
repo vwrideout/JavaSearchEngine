@@ -23,6 +23,11 @@ public class DocumentLocationMap {
 		this.word = word;
 	}
 	
+	/**
+	 * Calculates the number of times the stored word appears in a file.
+	 * @param fileName - file to count
+	 * @return - number of times the word appears
+	 */
 	public int totalAppearances(String fileName){
 		if(map.containsKey(fileName)){
 			return map.get(fileName).size();
@@ -30,6 +35,9 @@ public class DocumentLocationMap {
 		return 0;
 	}
 	
+	/**
+	 * @return - the set of all filenames stored in this DLM
+	 */
 	public Set<String> docNames(){
 		return map.keySet();
 	}

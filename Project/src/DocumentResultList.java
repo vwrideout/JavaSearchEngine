@@ -1,19 +1,24 @@
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.TreeSet;
 
-
-
+/**
+ * Custom list object for storing DocumentResult objects.
+ * @author Vincent Rideout
+ *
+ */
 public class DocumentResultList extends ArrayList<DocumentResult>{
 
 	private static final long serialVersionUID = 1L;
 	private String query;
 	
+	/**
+	 * Constructor to instantiate a new DocumentResultList
+	 * @param query - The search query associated with this object.
+	 */
 	public DocumentResultList(String query){
 		super();
 		this.query = query;
 	}
-	
+
 	public boolean contains(String fileName){
 		for(DocumentResult dr: this){
 			if(fileName == dr.getName()){
@@ -23,6 +28,11 @@ public class DocumentResultList extends ArrayList<DocumentResult>{
 		return false;
 	}
 	
+	/**
+	 * Changes the score of a DocumentResult stored in the list.
+	 * @param fileName - Name of the file being updated.
+	 * @param delta - Desired change in TF-IDF score.
+	 */
 	public void updateScore(String fileName, double delta){
 		for(DocumentResult dr: this){
 			if(fileName == dr.getName()){
@@ -32,6 +42,10 @@ public class DocumentResultList extends ArrayList<DocumentResult>{
 		}
 	}
 	
+	/**
+	 * Returns as a string: The query, a blank line, then each file name stored.
+	 * Collections.sort should be called on the list before printing.
+	 */
 	public String toString(){
 		StringBuffer s = new StringBuffer();
 		s.append(query + "\n");

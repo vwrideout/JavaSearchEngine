@@ -43,6 +43,12 @@ public class InvertedIndex {
 		map.get(word).addLocation(fileName, location);
 	}
 	
+	/**
+	 * Uses TF-IDF scores to search the index and returns a sorted DocumentResultList of files
+	 * matching the query. List is sorted in descending order of relevance.
+	 * @param query - Search query.
+	 * @return - DocumentResultList sorted in descending order of TF-IDF score.
+	 */
 	public DocumentResultList search(String query) {
 		DocumentResultList output = new DocumentResultList(query);
 		String[] queries = query.split("\\s+");

@@ -30,14 +30,20 @@ public class InvertedIndexBuilder {
 			this.delimiter = Pattern.compile("[^a-zA-Z0-9]+");
 	}
 	
+	/**
+	 * Build an inverted index from all text files in the given directory.
+	 * @return - InvertedIndex object containing data from the text files.
+	 */
 	public InvertedIndex build(){
 		index = new InvertedIndex();
 		processDir(directory);
 		return index;
 	}
 	
-	//recursively traverses all .txt files and subdirectories
-	
+	/**
+	 * Recursively traverses all subdirectories, calling processFile on all .txt files.
+	 * @param dir - The parent directory Path object to traverse.
+	 */
 	private void processDir(Path dir){
 		try(DirectoryStream<Path> stream = Files.newDirectoryStream(dir)){
 			for(Path file: stream){
@@ -45,7 +51,7 @@ public class InvertedIndexBuilder {
 					processDir(file);
 				}
 				else if(file.toString().toLowerCase().endsWith(".txt")){
-					processFile(file, file.toString());
+					processFile(file);
 				}
 			}
 		} catch (IOException ioe) {
@@ -53,22 +59,22 @@ public class InvertedIndexBuilder {
 		}
 	}
 	
-	/**reads the contents of a .txt file, adding them to the InvertedIndex at location 
-	 * denoted by the running wordcount. No exceptions thrown in case of I/O errors.
+	/**
+	 * Process a .txt file into the InvertedIndex. Also adds a total word count to the index for files with wordcount > 0.
+	 * @param file - Path object representing the .txt file to be processed.
 	 */
-	
-	private void processFile(Path file, String fileName){
+	private void processFile(Path file){
 		Scanner fileScanner;
 		int count = 1;
 		int totalwords = 0;
 		try {
 			fileScanner = new Scanner(file).useDelimiter(delimiter);
 			while(fileScanner.hasNext()){
-				index.add(fileScanner.next().toLowerCase(), fileName, count++);
+				index.add(fileScanner.next().toLowerCase(), file.toString(), count++);
 				totalwords++;
 			}
 			if(totalwords > 0){
-				index.addWordcount(fileName, totalwords);
+				index.addWordcount(file.toString(), totalwords);
 			}
 			fileScanner.close();
 		} catch (IOException ioe) {

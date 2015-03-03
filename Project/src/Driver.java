@@ -2,9 +2,10 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-/**Main method for project 1. Reads from "config.json" into a Configuration object,
+/**Main method for project 2. Reads from "config.json" into a Configuration object,
  * parses an input file into an InvertedIndex, then writes the contents of the index into 
- * an output file. 
+ * an output file. If search path in given, reads in queries from another input file, then
+ * writes the results of the searches to another output file.
  * @author Vincent Rideout
  *
  */

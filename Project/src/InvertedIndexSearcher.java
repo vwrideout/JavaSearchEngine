@@ -3,17 +3,29 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
+/**
+ * Helper class to run searches on an InvertedIndex object.
+ * @author Vincent Rideout
+ */
 public class InvertedIndexSearcher {
 	
 	private Path searchPath;
 	private InvertedIndex index;
 	
+	/**
+	 * Constructor to instantiate a new InvertedIndexSearcher.
+	 * @param searchPath - Path to an input file containing queries.
+	 * @param index - The InvertedIndex object on which to run queries.
+	 */
 	public InvertedIndexSearcher(Path searchPath, InvertedIndex index){
 		this.searchPath = searchPath;
 		this.index = index;
 	}
 	
+	/**
+	 * Executes all queries in the input file.
+	 * @return - ArrayList of results in the same order the queries were input.
+	 */
 	public ArrayList<DocumentResultList> search(){
 		ArrayList<DocumentResultList> output = new ArrayList<DocumentResultList>();
 		Scanner fileScanner;
@@ -29,6 +41,9 @@ public class InvertedIndexSearcher {
 		return output;
 	}
 	
+	/**
+	 * Executes all queries and returns the results in a String.
+	 */
 	public String toString(){
 		ArrayList<DocumentResultList> output = this.search();
 		StringBuffer s = new StringBuffer();
