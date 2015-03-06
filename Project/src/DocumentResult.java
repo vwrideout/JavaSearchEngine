@@ -23,6 +23,7 @@ public class DocumentResult implements Comparable<DocumentResult>{
 	}
 	
 	public int compareTo(DocumentResult dr){
+		//TODO: compare doc names in case of identical scores
 		return this.score.compareTo(dr.getScore());
 	}
 	
