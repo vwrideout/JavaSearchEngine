@@ -9,3 +9,5 @@
 /ThreadTest$ThreadOutputTest.class
 /ThreadTest.class
 /configurations/
+/ReadWriteLock.class
+/ConcurrentInvertedIndex.class
