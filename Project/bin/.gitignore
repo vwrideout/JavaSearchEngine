@@ -11,3 +11,5 @@
 /configurations/
 /ReadWriteLock.class
 /ConcurrentInvertedIndex.class
+/WorkQueue.class
+/WorkQueue$PoolWorker.class
