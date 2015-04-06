@@ -24,7 +24,7 @@ public class Driver {
 		PrintWriter pw;
 		if(inputDir.toFile().isDirectory()){	
 			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter());
-			InvertedIndex index = builder.build();
+			ConcurrentInvertedIndex index = builder.build();
 			if(config.getOutputPath() != null){
 				pw = new PrintWriter(config.getOutputPath());
 				pw.print(index.toString());

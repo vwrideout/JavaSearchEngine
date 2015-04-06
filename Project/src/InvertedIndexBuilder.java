@@ -1,4 +1,6 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.DirectoryStream;
@@ -15,7 +17,8 @@ public class InvertedIndexBuilder {
 
 	private Path directory;
 	private Pattern delimiter;
-	private InvertedIndex index;
+	private ConcurrentInvertedIndex index;
+	private WorkQueue queue;
 	
 	/**
 	 * Constructor to instantiate a new InvertedIndexBuilder
@@ -34,9 +37,12 @@ public class InvertedIndexBuilder {
 	 * Build an inverted index from all text files in the given directory.
 	 * @return - InvertedIndex object containing data from the text files.
 	 */
-	public InvertedIndex build(){
-		index = new InvertedIndex();
+	public ConcurrentInvertedIndex build(){
+		index = new ConcurrentInvertedIndex();
+		queue = new WorkQueue(10);
 		processDir(directory);
+		queue.shutdown();
+		queue.awaitTermination();
 		return index;
 	}
 	
@@ -44,6 +50,7 @@ public class InvertedIndexBuilder {
 	 * Recursively traverses all subdirectories, calling processFile on all .txt files.
 	 * @param dir - The parent directory Path object to traverse.
 	 */
+	
 	private void processDir(Path dir){
 		try(DirectoryStream<Path> stream = Files.newDirectoryStream(dir)){
 			for(Path file: stream){
@@ -51,7 +58,7 @@ public class InvertedIndexBuilder {
 					processDir(file);
 				}
 				else if(file.toString().toLowerCase().endsWith(".txt")){
-					processFile(file);
+					queue.execute(new FileProcessor(file));
 				}
 			}
 		} catch (IOException ioe) {
@@ -80,5 +87,32 @@ public class InvertedIndexBuilder {
 		} catch (IOException ioe) {
 			System.out.println("Unable to open file.");
 		}		
+	}
+	
+	private class FileProcessor implements Runnable{
+		private Path file;
+		
+		public FileProcessor(Path file){
+			this.file = file;
+		}
+		
+		public void run(){
+			Scanner fileScanner;
+			int count = 1;
+			int totalwords = 0;
+			try {
+				fileScanner = new Scanner(file).useDelimiter(delimiter);
+				while(fileScanner.hasNext()){
+					index.add(fileScanner.next().toLowerCase(), file.toString(), count++);
+					totalwords++;
+				}
+				if(totalwords > 0){
+					index.addWordcount(file.toString(), totalwords);
+				}
+				fileScanner.close();
+			} catch (IOException ioe) {
+				System.out.println("Unable to open file.");
+			}
+		}
 	}
 }

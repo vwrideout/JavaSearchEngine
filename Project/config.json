@@ -1,5 +1,5 @@
 {
-	"inputPath": "input",
+	"inputPath": "input/simple",
 	"outputPath": "output/result.txt",
-	"digitDelimiter": false
+	"digitDelimiter": true
 }

@@ -1,15 +1,2 @@
-/CrawlTest$ExceptionTester.class
-/CrawlTest$ExternalTester.class
-/CrawlTest$LocalTester.class
-/CrawlTest.class
-/Project3Test.class
-/Project4Test.class
-/ThreadStressTest.class
-/ThreadTest$ThreadConfigurationTest.class
-/ThreadTest$ThreadOutputTest.class
-/ThreadTest.class
-/configurations/
-/ReadWriteLock.class
-/ConcurrentInvertedIndex.class
-/WorkQueue.class
-/WorkQueue$PoolWorker.class
+/IndexInputBatch.class
+/InvertedIndexBuilder$FileProcessor.class

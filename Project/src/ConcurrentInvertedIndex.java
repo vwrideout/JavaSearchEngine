@@ -8,15 +8,26 @@ public class ConcurrentInvertedIndex extends InvertedIndex {
 		lock = new ReadWriteLock();
 	}
 	
-	public void addWordcount(String fileName, int num) {
+	/**public void addBatch(InvertedIndex batch){
 		lock.lockWrite();
-		super.addWordcount(fileName, num);
+		for(String word: batch.words()){
+			super.add(batch.getDLM(word));
+		}
+		for(String docName: batch.docNames()){
+			super.addWordcount(docName, batch.getWordCount(docName));
+		}
+		lock.unlockWrite();
+	}*/
+	
+	public void add(String word, String filename, int location){
+		lock.lockWrite();
+		super.add(word, filename, location);
 		lock.unlockWrite();
 	}
 	
-	public void add(String word, String fileName, int location) {
+	public void addWordcount(String filename, int num){
 		lock.lockWrite();
-		super.add(word,  fileName, location);
+		super.addWordcount(filename, num);
 		lock.unlockWrite();
 	}
 	

@@ -55,6 +55,20 @@ public class DocumentLocationMap {
 		map.get(fileName).add(location);
 	}
 	
+	/**public void update(DocumentLocationMap dlm){
+		for(String document: dlm.docNames()){
+			for(int location: dlm.getLocations(document)){
+				if(!this.contains(document, location)){
+					this.addLocation(document, location);
+				}
+			}
+		}
+	}
+	
+	public TreeSet<Integer> getLocations(String docName){
+		return map.get(docName);
+	}*/
+	
 	/**
 	 * Returns true if there is already a mapping from the given fileName to the location 
 	 * specified and false otherwise. This method is used for convenience and sanity checking

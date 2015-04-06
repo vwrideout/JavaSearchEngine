@@ -5,7 +5,7 @@ public class WorkQueue {
 	private final int nThreads;
 	private final PoolWorker[] threads;
 	private final LinkedList queue;
-	private boolean running;
+	private volatile boolean running;
 	
 	public WorkQueue(int nThreads){
 		running = true;
@@ -17,7 +17,7 @@ public class WorkQueue {
 			threads[i].start();
 		}
 	}
-	
+
 	public void execute(Runnable r){
 		if(running){
 			synchronized(queue){
@@ -32,14 +32,24 @@ public class WorkQueue {
 	
 	public void shutdown(){
 		for(int i = 0; i < nThreads; i++){
-			threads[i].running = false;
+			threads[i].shutdown();
+		}
+		running = false;
+		synchronized(queue){
+			queue.notifyAll();
 		}
 	}
 	
 	public void awaitTermination(){
+		synchronized(queue){
+			if(!queue.isEmpty()){
+				queue.notifyAll();
+			}
+		}
 		for(int i = 0; i < nThreads; i++){
 			try{
 				threads[i].join();
+				System.out.println("Thread " + i + " joined.");
 			}catch (InterruptedException ie){
 				System.out.println(ie.getMessage());
 			}
@@ -47,12 +57,12 @@ public class WorkQueue {
 	}
 	
 	private class PoolWorker extends Thread{
-		private boolean running;
+		private volatile boolean workerRunning;
 		
 		public void run(){
 			Runnable r;
-			running = true;
-			while(running || !queue.isEmpty()){
+			workerRunning = true;
+			while(workerRunning || !queue.isEmpty()){
 				synchronized(queue){
 					while(queue.isEmpty()){
 						try{
@@ -69,6 +79,10 @@ public class WorkQueue {
 					System.out.println(re.getMessage());
 				}
 			}
+		}
+		
+		public void shutdown(){
+			workerRunning = false;
 		}
 	}
 }
