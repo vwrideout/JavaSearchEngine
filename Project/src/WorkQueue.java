@@ -31,6 +31,8 @@ public class WorkQueue {
 	}
 	
 	public void shutdown(){
+		
+		//TODO: this for loop is not necessary.
 		for(int i = 0; i < nThreads; i++){
 			threads[i].shutdown();
 		}
@@ -60,10 +62,14 @@ public class WorkQueue {
 			workerRunning = true;
 			while(true){
 				synchronized(queue){
+					//TODO: this if is not necessary.
 					if(!workerRunning && queue.isEmpty()){
 						queue.notifyAll();
-						return;
+						return; 
 					}
+					
+					//TODO: this condition should ensure that the queue is empty AND
+					//the WQ is still running.
 					while(queue.isEmpty()){
 						try{
 							queue.wait();
@@ -71,7 +77,9 @@ public class WorkQueue {
 							System.out.println(ie.getMessage());
 						}
 					}
+
 					if(!workerRunning && queue.isEmpty()){
+						//TODO: no need to notify, just break out of the while.
 						queue.notifyAll();
 						return;
 					}
@@ -85,6 +93,7 @@ public class WorkQueue {
 			}
 		}
 		
+		//TODO: unnecessary
 		public void shutdown(){
 			workerRunning = false;
 		}
