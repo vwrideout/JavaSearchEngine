@@ -39,7 +39,7 @@ public class InvertedIndexBuilder {
 	 */
 	public ConcurrentInvertedIndex build(){
 		index = new ConcurrentInvertedIndex();
-		queue = new WorkQueue(10);
+		queue = new WorkQueue(100);
 		processDir(directory);
 		queue.shutdown();
 		queue.awaitTermination();

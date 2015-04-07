@@ -41,13 +41,9 @@ public class WorkQueue {
 	}
 	
 	public void awaitTermination(){
-		synchronized(queue){
-			if(!queue.isEmpty()){
-				queue.notifyAll();
-			}
-		}
 		for(int i = 0; i < nThreads; i++){
 			try{
+				System.out.println("trying to join thread " + i);
 				threads[i].join();
 				System.out.println("Thread " + i + " joined.");
 			}catch (InterruptedException ie){
@@ -62,14 +58,22 @@ public class WorkQueue {
 		public void run(){
 			Runnable r;
 			workerRunning = true;
-			while(workerRunning || !queue.isEmpty()){
+			while(true){
 				synchronized(queue){
+					if(!workerRunning && queue.isEmpty()){
+						queue.notifyAll();
+						return;
+					}
 					while(queue.isEmpty()){
 						try{
 							queue.wait();
 						}catch (InterruptedException ie){
 							System.out.println(ie.getMessage());
 						}
+					}
+					if(!workerRunning && queue.isEmpty()){
+						queue.notifyAll();
+						return;
 					}
 					r = (Runnable) queue.removeFirst();
 				}
