@@ -19,18 +19,20 @@ public class InvertedIndexBuilder {
 	private Pattern delimiter;
 	private ConcurrentInvertedIndex index;
 	private WorkQueue queue;
+	private int numThreads;
 	
 	/**
 	 * Constructor to instantiate a new InvertedIndexBuilder
 	 * @param directory 
 	 * @param digitDelimiter
 	 */
-	public InvertedIndexBuilder(Path directory, boolean digitDelimiter){
+	public InvertedIndexBuilder(Path directory, boolean digitDelimiter, int numThreads){
 		this.directory = directory;	
 		if(digitDelimiter)
 			this.delimiter = Pattern.compile("[^a-zA-Z]+");
 		else
 			this.delimiter = Pattern.compile("[^a-zA-Z0-9]+");
+		this.numThreads = numThreads;
 	}
 	
 	/**
@@ -39,7 +41,7 @@ public class InvertedIndexBuilder {
 	 */
 	public ConcurrentInvertedIndex build(){
 		index = new ConcurrentInvertedIndex();
-		queue = new WorkQueue(100);
+		queue = new WorkQueue(numThreads);
 		processDir(directory);
 		queue.shutdown();
 		queue.awaitTermination();

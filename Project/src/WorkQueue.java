@@ -31,11 +31,6 @@ public class WorkQueue {
 	}
 	
 	public void shutdown(){
-		
-		//TODO: this for loop is not necessary.
-		for(int i = 0; i < nThreads; i++){
-			threads[i].shutdown();
-		}
 		running = false;
 		synchronized(queue){
 			queue.notifyAll();
@@ -45,9 +40,7 @@ public class WorkQueue {
 	public void awaitTermination(){
 		for(int i = 0; i < nThreads; i++){
 			try{
-				System.out.println("trying to join thread " + i);
 				threads[i].join();
-				System.out.println("Thread " + i + " joined.");
 			}catch (InterruptedException ie){
 				System.out.println(ie.getMessage());
 			}
@@ -55,33 +48,20 @@ public class WorkQueue {
 	}
 	
 	private class PoolWorker extends Thread{
-		private volatile boolean workerRunning;
 		
 		public void run(){
 			Runnable r;
-			workerRunning = true;
 			while(true){
 				synchronized(queue){
-					//TODO: this if is not necessary.
-					if(!workerRunning && queue.isEmpty()){
-						queue.notifyAll();
-						return; 
-					}
-					
-					//TODO: this condition should ensure that the queue is empty AND
-					//the WQ is still running.
-					while(queue.isEmpty()){
+					while(running && queue.isEmpty()){
 						try{
 							queue.wait();
 						}catch (InterruptedException ie){
 							System.out.println(ie.getMessage());
 						}
 					}
-
-					if(!workerRunning && queue.isEmpty()){
-						//TODO: no need to notify, just break out of the while.
-						queue.notifyAll();
-						return;
+					if(!running && queue.isEmpty()){
+						break;
 					}
 					r = (Runnable) queue.removeFirst();
 				}
@@ -91,11 +71,6 @@ public class WorkQueue {
 					System.out.println(re.getMessage());
 				}
 			}
-		}
-		
-		//TODO: unnecessary
-		public void shutdown(){
-			workerRunning = false;
 		}
 	}
 }

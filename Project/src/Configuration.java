@@ -25,6 +25,7 @@ public class Configuration {
 	public static final String DIGIT_DELIMITER = "digitDelimiter";	
 	public static final String SEARCH_PATH = "searchPath";
 	public static final String SEARCH_OUTPUT_PATH = "searchOutputPath";
+	public static final String NUMBER_THREADS = "numberThreads";
 	
 
 	/**
@@ -36,6 +37,7 @@ public class Configuration {
 	private Path configPath;
 	private String searchPath;
 	private String searchOutputPath;
+	private Integer numberThreads;
 	
 	/**
 	 * Instantiates a Configuration object.
@@ -87,6 +89,12 @@ public class Configuration {
 		else{
 			searchOutputPath = null;
 		}
+		if(jsonobject.containsKey(NUMBER_THREADS)){
+			numberThreads = (Integer)jsonobject.get(NUMBER_THREADS);
+		}
+		else{
+			numberThreads = 5;
+		}
 	}
 	
 	/**
@@ -101,6 +109,10 @@ public class Configuration {
 			throw new InitializationException("digitDelimiter not specified");
 		if(!(jsonobject.get(DIGIT_DELIMITER) instanceof Boolean))
 			throw new InitializationException("digitDelimiter not a boolean");
+		if(jsonobject.containsKey(NUMBER_THREADS)){
+			if((!(jsonobject.get(NUMBER_THREADS) instanceof Integer)) || (Integer)jsonobject.get(NUMBER_THREADS) > 1000 || ((Integer)jsonobject.get(NUMBER_THREADS) < 1))
+				throw new InitializationException("numberThreads is not a valid integer value");
+		}
 	}
 	
 
@@ -134,6 +146,10 @@ public class Configuration {
 	 */
 	public boolean useDigitDelimiter() {
 		return digitDelimiter;
+	}
+	
+	public int getNumberThreads(){
+		return numberThreads;
 	}
 	
 	public String toString(){

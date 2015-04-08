@@ -23,7 +23,7 @@ public class Driver {
 		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
 		PrintWriter pw;
 		if(inputDir.toFile().isDirectory()){	
-			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter());
+			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
 			ConcurrentInvertedIndex index = builder.build();
 			if(config.getOutputPath() != null){
 				pw = new PrintWriter(config.getOutputPath());
@@ -32,7 +32,7 @@ public class Driver {
 			}
 			if(config.getSearchPath() != null){
 				Path searchPath = FileSystems.getDefault().getPath(config.getSearchPath());
-				InvertedIndexSearcher searcher = new InvertedIndexSearcher(searchPath, index);
+				InvertedIndexSearcher searcher = new InvertedIndexSearcher(searchPath, index, config.getNumberThreads());
 				String outputFilename = "results/default.txt";
 				if(config.getSearchOutputPath() != null){
 					outputFilename = config.getSearchOutputPath();
