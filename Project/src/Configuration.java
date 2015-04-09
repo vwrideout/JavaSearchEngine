@@ -90,7 +90,7 @@ public class Configuration {
 			searchOutputPath = null;
 		}
 		if(jsonobject.containsKey(NUMBER_THREADS)){
-			numberThreads = (Integer)jsonobject.get(NUMBER_THREADS);
+			numberThreads = ((Number)jsonobject.get(NUMBER_THREADS)).intValue();
 		}
 		else{
 			numberThreads = 5;
@@ -110,7 +110,7 @@ public class Configuration {
 		if(!(jsonobject.get(DIGIT_DELIMITER) instanceof Boolean))
 			throw new InitializationException("digitDelimiter not a boolean");
 		if(jsonobject.containsKey(NUMBER_THREADS)){
-			if((!(jsonobject.get(NUMBER_THREADS) instanceof Integer)) || (Integer)jsonobject.get(NUMBER_THREADS) > 1000 || ((Integer)jsonobject.get(NUMBER_THREADS) < 1))
+			if((!(jsonobject.get(NUMBER_THREADS) instanceof Long)) || ((Number)jsonobject.get(NUMBER_THREADS)).intValue() > 1000 || (((Number)jsonobject.get(NUMBER_THREADS)).intValue() < 1))
 				throw new InitializationException("numberThreads is not a valid integer value");
 		}
 	}

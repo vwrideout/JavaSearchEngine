@@ -18,6 +18,7 @@ public class Driver {
 		try{
 			config.init();
 		}catch (InitializationException ie){
+			ie.printStackTrace();
 			return;
 		}
 		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
@@ -25,8 +26,10 @@ public class Driver {
 		if(inputDir.toFile().isDirectory()){	
 			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
 			ConcurrentInvertedIndex index = builder.build();
+			System.out.println(config.getOutputPath());
 			if(config.getOutputPath() != null){
 				pw = new PrintWriter(config.getOutputPath());
+				System.out.println("trying print");
 				pw.print(index.toString());
 				pw.close();
 			}

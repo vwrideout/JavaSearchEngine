@@ -4,6 +4,6 @@
 	"digitDelimiter": true,
 	"searchPath": "queries/complex.txt",
 	"searchOutputPath": "output/searchresults.txt",
-	"numberThreads": 10
+	"numberThreads": 1
 
 }
