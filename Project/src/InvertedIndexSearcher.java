@@ -69,6 +69,11 @@ public class InvertedIndexSearcher {
 		return s.toString();
 	}
 	
+	/**
+	 * Helper class to run searches in threaded fashion.
+	 * @author Vincent
+	 *
+	 */
 	private class IndexSearcher implements Runnable{
 		private int resultindex;
 		private String query;

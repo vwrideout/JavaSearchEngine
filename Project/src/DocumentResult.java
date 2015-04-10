@@ -22,9 +22,14 @@ public class DocumentResult implements Comparable<DocumentResult>{
 		this.score = score;
 	}
 	
+	/**
+	 * Compares by document name in the case of TF-IDF ties.
+	 */
 	public int compareTo(DocumentResult dr){
-		//TODO: compare doc names in case of identical scores
-		return this.score.compareTo(dr.getScore());
+		if(this.score.compareTo(dr.getScore()) == 0){
+			return this.doc.compareTo(dr.getName());
+		}
+		return(this.score.compareTo(dr.getScore()));
 	}
 	
 	public String getName(){

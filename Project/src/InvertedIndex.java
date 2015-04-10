@@ -44,31 +44,6 @@ public class InvertedIndex {
 		map.get(word).addLocation(fileName, location);
 	}
 	
-	/**public void add(DocumentLocationMap dlm){
-		if(!map.containsKey(dlm.getWord())){
-			map.put(dlm.getWord(), dlm);
-		}
-		else{
-			map.get(dlm.getWord()).update(dlm);
-		}
-	}
-	
-	public DocumentLocationMap getDLM(String word){
-		return map.get(word);
-	}
-	
-	public Set<String> words(){
-		return map.keySet();
-	}
-	
-	public int getWordCount(String docName){
-		return wordcounts.get(docName);
-	}
-	
-	public Set<String> docNames(){
-		return wordcounts.keySet();
-	}*/
-	
 	/**
 	 * Uses TF-IDF scores to search the index and returns a sorted DocumentResultList of files
 	 * matching the query. List is sorted in descending order of relevance.

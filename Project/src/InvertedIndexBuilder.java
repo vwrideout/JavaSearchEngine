@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Class that builds the InvertedIndex.
+ * Class that builds the ConcurrentInvertedIndex.
  * 
  * @author Vincent Rideout
  *
@@ -25,6 +25,7 @@ public class InvertedIndexBuilder {
 	 * Constructor to instantiate a new InvertedIndexBuilder
 	 * @param directory 
 	 * @param digitDelimiter
+	 * @param numThreads
 	 */
 	public InvertedIndexBuilder(Path directory, boolean digitDelimiter, int numThreads){
 		this.directory = directory;	
@@ -91,6 +92,11 @@ public class InvertedIndexBuilder {
 		}		
 	}
 	
+	/**
+	 * Helper class to process files in multithreaded fashion.
+	 * @author Vincent
+	 *
+	 */
 	private class FileProcessor implements Runnable{
 		private Path file;
 		
@@ -98,6 +104,22 @@ public class InvertedIndexBuilder {
 			this.file = file;
 		}
 		
+		public void run(){
+			Scanner fileScanner;
+			IndexInputBatch batch = new IndexInputBatch(file.toString());
+			try{
+				fileScanner = new Scanner(file).useDelimiter(delimiter);
+				while(fileScanner.hasNext()){
+					batch.add(fileScanner.next().toLowerCase());
+				}
+				index.addBatch(batch);
+				fileScanner.close();
+			}catch(IOException ioe){
+				System.out.println("Unable to open file.");
+			}
+		}
+		
+		/** run method for processing without IndexInputBatch
 		public void run(){
 			Scanner fileScanner;
 			int count = 1;
@@ -115,6 +137,6 @@ public class InvertedIndexBuilder {
 			} catch (IOException ioe) {
 				System.out.println("Unable to open file.");
 			}
-		}
+		}*/
 	}
 }

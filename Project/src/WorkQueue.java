@@ -1,12 +1,20 @@
 import java.util.LinkedList;
 
-
+/**
+ * An adaptation of the IBM implementation of WorkQueue.
+ * @author Vincent Rideout
+ *
+ */
 public class WorkQueue {
 	private final int nThreads;
 	private final PoolWorker[] threads;
 	private final LinkedList queue;
 	private volatile boolean running;
 	
+	/**
+	 * Constructor to instantiate a new WorkQueue.
+	 * @param nThreads - Number of threads desired.
+	 */
 	public WorkQueue(int nThreads){
 		running = true;
 		this.nThreads = nThreads;
@@ -17,7 +25,11 @@ public class WorkQueue {
 			threads[i].start();
 		}
 	}
-
+	
+	/**
+	 * Insert a job into the WorkQueue.
+	 * @param r
+	 */
 	public void execute(Runnable r){
 		if(running){
 			synchronized(queue){
@@ -30,6 +42,9 @@ public class WorkQueue {
 		}
 	}
 	
+	/**
+	 * Stop the WorkQueue from accepting new jobs.
+	 */
 	public void shutdown(){
 		running = false;
 		synchronized(queue){
@@ -37,6 +52,10 @@ public class WorkQueue {
 		}
 	}
 	
+	/**
+	 * Blocking method to wait for all jobs in the queue to finish.
+	 * To be called after shutdown.
+	 */
 	public void awaitTermination(){
 		for(int i = 0; i < nThreads; i++){
 			try{
@@ -47,6 +66,11 @@ public class WorkQueue {
 		}
 	}
 	
+	/**
+	 * Helper class to populate the WorkQueue with jobs.
+	 * @author Vincent
+	 *
+	 */
 	private class PoolWorker extends Thread{
 		
 		public void run(){
