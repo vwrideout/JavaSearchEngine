@@ -58,14 +58,15 @@ public class InvertedIndexSearcher {
 	}
 	
 	/**
-	 * Executes all queries and returns the results in a String.
+	 * Returns the results of the search in a String.
 	 */
 	public String toString(){
-		this.search();
 		StringBuffer s = new StringBuffer();
+		lock.lockRead();
 		for(int i = 0; results[i] != null; i++){
 			s.append(results[i].toString());
 		}
+		lock.unlockRead();
 		return s.toString();
 	}
 	

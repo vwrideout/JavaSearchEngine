@@ -34,6 +34,7 @@ public class Driver {
 			if(config.getSearchPath() != null){
 				Path searchPath = FileSystems.getDefault().getPath(config.getSearchPath());
 				InvertedIndexSearcher searcher = new InvertedIndexSearcher(searchPath, index, config.getNumberThreads());
+				searcher.search();
 				String outputFilename = "results/default.txt";
 				if(config.getSearchOutputPath() != null){
 					outputFilename = config.getSearchOutputPath();

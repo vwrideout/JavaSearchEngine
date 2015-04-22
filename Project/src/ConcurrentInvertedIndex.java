@@ -8,14 +8,12 @@
 public class ConcurrentInvertedIndex extends InvertedIndex {
 	
 	private ReadWriteLock lock;
-	private int batches;
 	
 	/**
 	 * Constructor to instantiate a new ConcurrentInvertedIndex.
 	 */
 	public ConcurrentInvertedIndex() {
 		super();
-		batches = 0;
 		lock = new ReadWriteLock();
 	}
 
