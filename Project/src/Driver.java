@@ -1,4 +1,6 @@
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
@@ -13,6 +15,9 @@ import java.nio.file.Path;
 public class Driver {
 
 	public static void main(String[] args) throws Exception {
+		boolean built = false;
+		boolean inputIsURL = true;
+		ConcurrentInvertedIndex index = null;
 		Path path = FileSystems.getDefault().getPath("config.json");
 		Configuration config = new Configuration(path);
 		try{
@@ -23,9 +28,23 @@ public class Driver {
 		}
 		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
 		PrintWriter pw;
-		if(inputDir.toFile().isDirectory()){	
+		URL seed = new URL(inputDir.toString());
+		try{
+			seed.toURI();
+		}catch(URISyntaxException e){
+			inputIsURL = false;
+		}
+		if(inputIsURL){
+			WebCrawler crawler = new WebCrawler(seed.toURI(), config.useDigitDelimiter(), config.getNumberThreads());
+			index = crawler.crawl();
+			built = true;
+		}
+		else if(inputDir.toFile().isDirectory()){	
 			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
-			ConcurrentInvertedIndex index = builder.build();
+			index = builder.build();
+			built = true;
+		}
+		if(built){
 			if(config.getOutputPath() != null){
 				pw = new PrintWriter(config.getOutputPath());
 				pw.print(index.toString());

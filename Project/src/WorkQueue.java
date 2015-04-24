@@ -26,6 +26,12 @@ public class WorkQueue {
 		}
 	}
 	
+	public boolean isEmpty(){
+		synchronized(queue){
+			return queue.isEmpty();
+		}
+	}
+	
 	/**
 	 * Insert a job into the WorkQueue.
 	 * @param r
