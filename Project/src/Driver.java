@@ -17,7 +17,6 @@ public class Driver {
 
 	public static void main(String[] args) throws Exception {
 		boolean built = false;
-		boolean inputIsURL = true;
 		ConcurrentInvertedIndex index = null;
 		Path path = FileSystems.getDefault().getPath("config.json");
 		Configuration config = new Configuration(path);
@@ -27,21 +26,14 @@ public class Driver {
 			System.out.println(ie.getMessage());
 			return;
 		}
-		String configInput = config.getInputPath();
 		PrintWriter pw;
-		URI inputURI = null;
-		try{
-			inputURI = new URL(configInput).toURI();
-		}catch(URISyntaxException e){
-			inputIsURL = false;
-		}
-		if(inputIsURL){
-			WebCrawler crawler = new WebCrawler(inputURI, config.useDigitDelimiter(), config.getNumberThreads());
+		if(config.inputPathIsURL()){
+			WebCrawler crawler = new WebCrawler(new URI(config.getInputPath()), config.useDigitDelimiter(), config.getNumberThreads());
 			index = crawler.crawl();
 			built = true;
 		}
 		else {
-			Path inputDir = FileSystems.getDefault().getPath(configInput);
+			Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
 			if(inputDir.toFile().isDirectory()){	
 				InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
 				index = builder.build();

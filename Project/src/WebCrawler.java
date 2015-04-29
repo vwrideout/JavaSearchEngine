@@ -62,7 +62,6 @@ public class WebCrawler {
 					synchronized(visited){
 						if(!visited.contains(link) && visited.size() < 50){
 							visited.add(link);
-							System.out.println(visited.size() + "; " + link.toString());
 							jobsPending++;
 							queue.execute(new CrawlWorker(link));
 						}

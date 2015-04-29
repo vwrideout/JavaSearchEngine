@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.regex.Pattern;
 
 
 public class HTTPFetcher {
@@ -29,7 +30,7 @@ public class HTTPFetcher {
 			//note: a better approach would be to first read headers, determine content length
 			//then read the remaining bytes as a byte stream
 			String line = reader.readLine();
-			for(int i = 0; i <= 7; i++){
+			while(!Pattern.matches("^\\s*$", line)){
 				line = reader.readLine();
 			}
 			while(line != null) {				

@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -38,6 +41,7 @@ public class Configuration {
 	private String searchPath;
 	private String searchOutputPath;
 	private Integer numberThreads;
+	private boolean inputPathIsURL;
 	
 	/**
 	 * Instantiates a Configuration object.
@@ -70,6 +74,10 @@ public class Configuration {
 		}
 		validate(jsonobject);
 		inputPath = (String)jsonobject.get(INPUT_PATH);
+		inputPathIsURL = true;
+		try{
+			new URL(inputPath).toURI();
+		}catch(URISyntaxException | MalformedURLException e){inputPathIsURL = false;}
 		digitDelimiter = (boolean)jsonobject.get(DIGIT_DELIMITER);
 		if(jsonobject.containsKey(OUTPUT_PATH)){
 			outputPath = (String)jsonobject.get(OUTPUT_PATH);
@@ -150,6 +158,10 @@ public class Configuration {
 	
 	public int getNumberThreads(){
 		return numberThreads;
+	}
+	
+	public boolean inputPathIsURL(){
+		return inputPathIsURL;
 	}
 	
 	public String toString(){

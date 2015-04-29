@@ -1,9 +1,9 @@
 {
-	"inputPath": "http://www.cs.usfca.edu/~cs212/birds/yellowthroat.html",
+	"inputPath": "input/",
 	"outputPath": "output/result.txt",
-	"digitDelimiter": false,
+	"digitDelimiter": true,
 	"searchPath": "queries/complex.txt",
 	"searchOutputPath": "output/searchresults.txt",
-	"numberThreads": 5
+	"numberThreads": 1
 
 }
