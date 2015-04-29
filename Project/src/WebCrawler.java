@@ -57,11 +57,12 @@ public class WebCrawler {
 			ArrayList<String> links = HTMLLinkParser.listLinks(data);
 			for(String str: links){
 				try{
-					URI link = new URI(str);
-					System.out.println(link.toString());
+					URI link = page.resolve(new URI(str));
+					link = new URI(link.getScheme(), link.getSchemeSpecificPart(), null);
 					synchronized(visited){
 						if(!visited.contains(link) && visited.size() < 50){
 							visited.add(link);
+							System.out.println(visited.size() + "; " + link.toString());
 							jobsPending++;
 							queue.execute(new CrawlWorker(link));
 						}
@@ -69,7 +70,6 @@ public class WebCrawler {
 				}catch(URISyntaxException e){}
 			}
 			data = HTMLCleaner.cleanHTML(data);
-			System.out.println(data);
 			IndexInputBatch batch = new IndexInputBatch(page.toString());
 			Scanner stringScanner = new Scanner(data).useDelimiter(delimiter);
 			while(stringScanner.hasNext()){
