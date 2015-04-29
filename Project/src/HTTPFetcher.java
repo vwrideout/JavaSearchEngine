@@ -29,6 +29,9 @@ public class HTTPFetcher {
 			//note: a better approach would be to first read headers, determine content length
 			//then read the remaining bytes as a byte stream
 			String line = reader.readLine();
+			for(int i = 0; i <= 7; i++){
+				line = reader.readLine();
+			}
 			while(line != null) {				
 				buf.append(line + "\n"); //append the newline stripped by readline
 				line = reader.readLine();

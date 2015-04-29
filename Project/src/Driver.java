@@ -1,4 +1,5 @@
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystems;
@@ -26,23 +27,26 @@ public class Driver {
 			System.out.println(ie.getMessage());
 			return;
 		}
-		Path inputDir = FileSystems.getDefault().getPath(config.getInputPath());
+		String configInput = config.getInputPath();
 		PrintWriter pw;
-		URL seed = new URL(inputDir.toString());
+		URI inputURI = null;
 		try{
-			seed.toURI();
+			inputURI = new URL(configInput).toURI();
 		}catch(URISyntaxException e){
 			inputIsURL = false;
 		}
 		if(inputIsURL){
-			WebCrawler crawler = new WebCrawler(seed.toURI(), config.useDigitDelimiter(), config.getNumberThreads());
+			WebCrawler crawler = new WebCrawler(inputURI, config.useDigitDelimiter(), config.getNumberThreads());
 			index = crawler.crawl();
 			built = true;
 		}
-		else if(inputDir.toFile().isDirectory()){	
-			InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
-			index = builder.build();
-			built = true;
+		else {
+			Path inputDir = FileSystems.getDefault().getPath(configInput);
+			if(inputDir.toFile().isDirectory()){	
+				InvertedIndexBuilder builder = new InvertedIndexBuilder(inputDir, config.useDigitDelimiter(), config.getNumberThreads());
+				index = builder.build();
+				built = true;
+			}
 		}
 		if(built){
 			if(config.getOutputPath() != null){
