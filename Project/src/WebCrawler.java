@@ -21,7 +21,7 @@ public class WebCrawler {
 	private int numThreads;
 	private URI seed;
 	private Pattern delimiter;
-	private volatile int jobsPending;
+	private int jobsPending;
 	
 	/**
 	 * Constructor to instantiate a new WebCrawler.
@@ -61,6 +61,18 @@ public class WebCrawler {
 		return index;
 	}
 	
+	private synchronized void incrementJobs(){
+		jobsPending++;
+	}
+	
+	private synchronized void decrementJobs(){
+		if(--jobsPending < 1){
+			synchronized(visited){
+				visited.notifyAll();
+			}
+		}
+	}
+	
 	/**
 	 * Helper class to build the index in threaded fashion.
 	 * @author Vincent Rideout
@@ -83,7 +95,7 @@ public class WebCrawler {
 					synchronized(visited){
 						if(!visited.contains(link) && visited.size() < 50){
 							visited.add(link);
-							jobsPending++;
+							incrementJobs();
 							queue.execute(new CrawlWorker(link));
 						}
 					}
@@ -97,11 +109,7 @@ public class WebCrawler {
 			}
 			index.addBatch(batch);
 			stringScanner.close();
-			if(--jobsPending < 1){
-				synchronized(visited){
-					visited.notifyAll();
-				}
-			}
+			decrementJobs();
 		}
 	}
 	
