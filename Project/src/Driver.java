@@ -5,9 +5,9 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-/**Main method for project 2. Reads from "config.json" into a Configuration object,
- * parses an input file into an InvertedIndex, then writes the contents of the index into 
- * an output file. If search path in given, reads in queries from another input file, then
+/**Main method for project 4. Reads from "config.json" into a Configuration object,
+ * parses an input file or website into a ConcurrentInvertedIndex, then writes the contents of 
+ * the index into an output file. If search path in given, reads in queries from another input file, then
  * writes the results of the searches to another output file.
  * @author Vincent Rideout
  *

@@ -7,7 +7,13 @@ import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-
+/**
+ * Another class to build an InvertedIndex. This one builds the index by traversing web pages.
+ * It will parse the seed page and all pages linked to on the seed page, until it reads 50 pages
+ * or runs out of links to follow. 
+ * @author Vincent Rideout
+ *
+ */
 public class WebCrawler {
 	private ConcurrentInvertedIndex index;
 	private TreeSet<URI> visited;
@@ -17,6 +23,12 @@ public class WebCrawler {
 	private Pattern delimiter;
 	private volatile int jobsPending;
 	
+	/**
+	 * Constructor to instantiate a new WebCrawler.
+	 * @param seed - URI object containing the URL of the first page to crawl.
+	 * @param digitDelimiter
+	 * @param numThreads
+	 */
 	public WebCrawler(URI seed, boolean digitDelimiter, int numThreads){
 		this.seed = seed;
 		this.numThreads = numThreads;
@@ -27,6 +39,10 @@ public class WebCrawler {
 			this.delimiter = Pattern.compile("[^a-zA-Z0-9]+");
 	}
 	
+	/**
+	 * Builds a ConcurrentInvertedIndex from the seed web page.
+	 * @return - the new index.
+	 */
 	public ConcurrentInvertedIndex crawl(){
 		index = new ConcurrentInvertedIndex();
 		queue = new WorkQueue(numThreads);
@@ -45,6 +61,11 @@ public class WebCrawler {
 		return index;
 	}
 	
+	/**
+	 * Helper class to build the index in threaded fashion.
+	 * @author Vincent Rideout
+	 *
+	 */
 	private class CrawlWorker implements Runnable{
 		private URI page;
 		

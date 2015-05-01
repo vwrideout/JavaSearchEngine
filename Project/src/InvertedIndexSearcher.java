@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class InvertedIndexSearcher {
 	
 	private Path searchPath;
-	private InvertedIndex index;
+	private ConcurrentInvertedIndex index;
 	private WorkQueue queue;
 	private DocumentResultList[] results;
 	private ReadWriteLock lock;
@@ -41,11 +41,13 @@ public class InvertedIndexSearcher {
 			fileScanner = new Scanner(searchPath);
 			while(fileScanner.hasNextLine()){
 				if(i >= results.length){
+					lock.lockWrite();
 					DocumentResultList[] tmp = new DocumentResultList[results.length * 2];
 					for(int j = 0; j < i; j++){
 						tmp[j] = results[j];
 					}
 					results = tmp;
+					lock.unlockWrite();
 				}
 				queue.execute(new IndexSearcher(i++, fileScanner.nextLine()));
 			}
