@@ -5,6 +5,9 @@ import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
+
 /**Main method for project 4. Reads from "config.json" into a Configuration object,
  * parses an input file or website into a ConcurrentInvertedIndex, then writes the contents of 
  * the index into an output file. If search path in given, reads in queries from another input file, then
@@ -58,6 +61,12 @@ public class Driver {
 				pw.print(searcher.toString());
 				pw.close();
 			}
+			Server server = new Server(8080);
+			ServletHandler handler = new ServletHandler();
+			server.setHandler(handler);
+			handler.addServletWithMapping("SearchServlet.class", "/search");
+			server.start();
+			server.join();
 		}
 	}
 	

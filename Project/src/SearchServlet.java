@@ -19,4 +19,18 @@ public class SearchServlet extends HttpServlet{
 		out.println("<input type=\"submit\" value=\"Submit\"></form>");
 		out.println("</body></html>");
 	}
+	
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		response.setContentType("text/html");
+		response.setStatus(HttpServletResponse.SC_OK);
+		
+		PrintWriter out = response.getWriter();
+		out.println("<html><title>Results</title><body>");
+		out.println("<form action=\"results\" method=\"post\">");
+		out.println("Enter a query: <br/>");
+		out.println("<input type=\"text\" name=\"query\"><br/>");
+		out.println("<input type=\"submit\" value=\"Submit\"></form>");
+		out.println("You searched for " + request.getParameter("query"));
+		out.println("</body></html>");
+	}
 }
