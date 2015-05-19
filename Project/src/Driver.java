@@ -7,6 +7,7 @@ import java.nio.file.Path;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 
 /**Main method for project 4. Reads from "config.json" into a Configuration object,
  * parses an input file or website into a ConcurrentInvertedIndex, then writes the contents of 
@@ -64,7 +65,8 @@ public class Driver {
 			Server server = new Server(8080);
 			ServletHandler handler = new ServletHandler();
 			server.setHandler(handler);
-			handler.addServletWithMapping("SearchServlet.class", "/search");
+			ServletHolder searchHolder = new ServletHolder(new SearchServlet(index));
+			handler.addServletWithMapping(searchHolder, "/search");
 			server.start();
 			server.join();
 		}

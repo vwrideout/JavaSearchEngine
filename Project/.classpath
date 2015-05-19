@@ -69,5 +69,10 @@
 	<classpathentry kind="lib" path="C:/Users/Vincent/Downloads/jetty-distribution-9.2.10.v20150310/jetty-distribution-9.2.10.v20150310/lib/spdy/spdy-http-server-9.2.10.v20150310.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Vincent/Downloads/jetty-distribution-9.2.10.v20150310/jetty-distribution-9.2.10.v20150310/lib/spdy/spdy-server-9.2.10.v20150310.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Vincent/Downloads/jetty-distribution-9.2.10.v20150310/jetty-distribution-9.2.10.v20150310/lib/spring/jetty-spring-9.2.10.v20150310.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/mysql-connector-java-5.1.35-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/src/lib/c3p0-0.9.1-pre6.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/src/lib/jboss-common-jdbc-wrapper.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/src/lib/jboss-common-jdbc-wrapper-src.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector.J 5.1/src/lib/slf4j-api-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
