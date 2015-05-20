@@ -34,3 +34,6 @@
 /ThreadTest.class
 /LoginServlet.class
 /MyJDBC.class
+/LogoutServlet.class
+/NewUserServlet.class
+/HistoryServlet.class

@@ -2,14 +2,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class LoginServlet extends HttpServlet{
+public class NewUserServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("text/html");
 		response.setStatus(HttpServletResponse.SC_OK);
@@ -18,14 +17,15 @@ public class LoginServlet extends HttpServlet{
 		PrintWriter out = response.getWriter();
 		out.println("<html><title>Login</title><body>");
 		if(status != null){
-			if(status.equals("badusername")){
-				out.println("Bad username. Please try again.<br>");
+			if(status.equals("bad")){
+				out.println("Please enter both a username and a password.<br>");
 			}
-			if(status.equals("badpassword")){
-				out.println("Incorrect password. Please try again.<br>");
+			if(status.equals("taken")){
+				out.println("That username is taken. Please choose a different one.<br>");
 			}
 		}
-		out.println("<form action=\"login\" method=\"post\">");
+		out.println("Create your new user account:<br>");
+		out.println("<form action=\"newuser\" method=\"post\">");
 		out.println("Username: <br/>");
 		out.println("<input type=\"text\" name=\"username\"><br/>");
 		out.println("Password: <br/>");
@@ -38,24 +38,23 @@ public class LoginServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		if(username == null || username.equals("")){
-			response.sendRedirect(response.encodeRedirectURL("/login?status=badusername"));
+		if(username == null || username.equals("") || password == null && password.equals("")){
+			response.sendRedirect(response.encodeRedirectURL("/newuser?status=bad"));
 			return;
 		}
-		ResultSet results = MyJDBC.executeJDBCQuery("SELECT password FROM login WHERE username=\"" + username + "\";");
+		ResultSet results = MyJDBC.executeJDBCQuery("SELECT * FROM login WHERE username=\"" + username + "\";");
 		try {
-			if(!results.first()){
-				response.sendRedirect(response.encodeRedirectURL("/login?status=badusername"));
+			if(results.first()){
+				response.sendRedirect(response.encodeRedirectURL("/newuser?status=taken"));
 				return;
 			}
-			if(!results.getString("password").equals(password)){
-				response.sendRedirect(response.encodeRedirectURL("/login?status=badpassword"));
-			}
+			MyJDBC.executeJDBCUpdate("INSERT INTO login VALUES (\"" + username + "\",\"" + password + "\");");
 			request.getSession().setAttribute("username", username);
 			response.sendRedirect(response.encodeRedirectURL("/search"));
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
-			response.sendRedirect(response.encodeRedirectURL("/login?status=badpassword"));
+			response.sendRedirect(response.encodeRedirectURL("/newuser?status=bad"));
 		}
 	}
+
 }

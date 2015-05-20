@@ -19,6 +19,7 @@ public class MyJDBC {
 		try {
 			Connection con = DriverManager.getConnection(urlString, username, password);
 			Statement stmt = con.createStatement();
+			stmt.executeUpdate("USE cs212");
 			stmt.executeUpdate(update);
 			con.close();
 		} catch (SQLException e) {
@@ -39,8 +40,8 @@ public class MyJDBC {
 		try {
 			Connection con = DriverManager.getConnection(urlString, username, password);
 			Statement stmt = con.createStatement();
+			stmt.executeUpdate("USE cs212");
 			ResultSet output = stmt.executeQuery(query);
-			con.close();
 			return output;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

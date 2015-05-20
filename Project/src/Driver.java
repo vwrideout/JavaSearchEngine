@@ -6,6 +6,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
@@ -63,11 +64,14 @@ public class Driver {
 				pw.close();
 			}
 			Server server = new Server(8080);
-			ServletHandler handler = new ServletHandler();
+			ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 			server.setHandler(handler);
 			ServletHolder searchHolder = new ServletHolder(new SearchServlet(index));
-			handler.addServletWithMapping(searchHolder, "/search");
-			handler.addServletWithMapping(LoginServlet.class, "/login");
+			handler.addServlet(searchHolder, "/search");
+			handler.addServlet(LoginServlet.class, "/login");
+			handler.addServlet(LogoutServlet.class, "/logout");
+			handler.addServlet(NewUserServlet.class, "/newuser");
+			handler.addServlet(HistoryServlet.class, "/history");
 			server.start();
 			server.join();
 		}
