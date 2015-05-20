@@ -67,6 +67,7 @@ public class Driver {
 			server.setHandler(handler);
 			ServletHolder searchHolder = new ServletHolder(new SearchServlet(index));
 			handler.addServletWithMapping(searchHolder, "/search");
+			handler.addServletWithMapping(LoginServlet.class, "/login");
 			server.start();
 			server.join();
 		}

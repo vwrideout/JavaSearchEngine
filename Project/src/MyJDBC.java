@@ -5,8 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-
-public class JDBCHelloWorld {
+public class MyJDBC {
 	public static void executeJDBCUpdate(String update){
 		String username = "cs212";
 		String password = "Project5";
@@ -48,30 +47,5 @@ public class JDBCHelloWorld {
 			return null;
 		} 
 	}
-	
-	public static void main(String args[]){
-		String username = "cs212";
-		String password = "Project5";
-		try{
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-		}catch(Exception e){
-			System.out.println("Can't find driver");
-			System.exit(0);
-		}
-		String urlString = "jdbc:mysql://localhost:3306/";
-		try {
-			Connection con = DriverManager.getConnection(urlString, username, password);
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate("USE cs212");
-			//stmt.executeUpdate("CREATE TABLE hello (wordone VARCHAR(50), wordtwo VARCHAR(50));");
-			//stmt.executeUpdate("INSERT INTO hello VALUES (\"hello\", \"world\")");
-			ResultSet result = stmt.executeQuery("SELECT * FROM hello");
-			result.next();
-			System.out.println(result.getString("wordone"));
-			System.out.println(result.getString("wordtwo"));
-			con.close();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		} 
-	}
+
 }
