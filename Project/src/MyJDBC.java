@@ -4,8 +4,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * Class containing static methods for interacting with the MySQL database.
+ * @author Vincent Rideout
+ *
+ */
 public class MyJDBC {
+	/**
+	 * Connects to the cs212 database on this computer, then executes the provided update command on that database.
+	 * @param update
+	 */
 	public static void executeJDBCUpdate(String update){
 		String username = "cs212";
 		String password = "Project5";
@@ -27,6 +35,11 @@ public class MyJDBC {
 		} 
 	}
 	
+	/**
+	 * Connects to the cs212 database, then executes a query on that database and returns the result.
+	 * @param query
+	 * @return
+	 */
 	public static ResultSet executeJDBCQuery(String query){
 		String username = "cs212";
 		String password = "Project5";

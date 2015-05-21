@@ -8,7 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+/**
+ * Jetty Servlet implementing visited links. Serves as a redirect station when a search result is followed,
+ * or a clearable list of links when visited directly. 
+ * @author Vincent Rideout
+ *
+ */
 public class VisitedServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		if(request.getParameter("link") != null){

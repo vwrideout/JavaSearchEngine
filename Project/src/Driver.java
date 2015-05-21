@@ -10,10 +10,11 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-/**Main method for project 4. Reads from "config.json" into a Configuration object,
+/**Main method for project 5. Reads from "config.json" into a Configuration object,
  * parses an input file or website into a ConcurrentInvertedIndex, then writes the contents of 
  * the index into an output file. If search path in given, reads in queries from another input file, then
- * writes the results of the searches to another output file.
+ * writes the results of the searches to another output file. Then if input file was a website, launches
+ * a Jetty server implementing a search engine.
  * @author Vincent Rideout
  *
  */
@@ -63,19 +64,21 @@ public class Driver {
 				pw.print(searcher.toString());
 				pw.close();
 			}
-			Server server = new Server(8080);
-			ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-			server.setHandler(handler);
-			ServletHolder searchHolder = new ServletHolder(new SearchServlet(index));
-			handler.addServlet(searchHolder, "/search");
-			handler.addServlet(LoginServlet.class, "/login");
-			handler.addServlet(LogoutServlet.class, "/logout");
-			handler.addServlet(NewUserServlet.class, "/newuser");
-			handler.addServlet(HistoryServlet.class, "/history");
-			handler.addServlet(VisitedServlet.class, "/visited");
-			handler.addServlet(FavoriteServlet.class, "/favorite");
-			handler.addServlet(ChangePasswordServlet.class, "/changepassword");
-			server.start();
+			if(config.inputPathIsURL()){
+				Server server = new Server(8080);
+				ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+				server.setHandler(handler);
+				ServletHolder searchHolder = new ServletHolder(new SearchServlet(index));
+				handler.addServlet(searchHolder, "/search");
+				handler.addServlet(LoginServlet.class, "/login");
+				handler.addServlet(LogoutServlet.class, "/logout");
+				handler.addServlet(NewUserServlet.class, "/newuser");
+				handler.addServlet(HistoryServlet.class, "/history");
+				handler.addServlet(VisitedServlet.class, "/visited");
+				handler.addServlet(FavoriteServlet.class, "/favorite");
+				handler.addServlet(ChangePasswordServlet.class, "/changepassword");
+				server.start();
+			}
 		}
 	}
 	

@@ -7,7 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * Jetty Servlet that allows users to change their password. 
+ * @author Vincent
+ *
+ */
 public class ChangePasswordServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("text/html");

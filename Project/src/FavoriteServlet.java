@@ -7,7 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * Jetty Servlet that implements the storing, viewing and clearing of a "favorites" list for search links.
+ * @author Vincent Rideout
+ *
+ */
 public class FavoriteServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		String link = request.getParameter("link");
@@ -16,7 +20,7 @@ public class FavoriteServlet extends HttpServlet{
 			if(username != null){
 				MyJDBC.executeJDBCUpdate("INSERT INTO favorite VALUES (\"" + username + "\",\"" + link + "\");");
 			}
-			response.sendRedirect(response.encodeRedirectURL(request.getHeader("referer")));
+			response.sendRedirect(response.encodeRedirectURL("search?query=" + request.getParameter("query")));
 			return;
 		}
 		response.setContentType("text/html");
@@ -45,14 +49,5 @@ public class FavoriteServlet extends HttpServlet{
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
-		String link = request.getParameter("link");
-		String username = (String)request.getSession().getAttribute("username");
-		if(link != null && username != null){
-			MyJDBC.executeJDBCUpdate("INSERT INTO favorite VALUES (\"" + username + "\",\"" + link + "\");");
-		}
-		response.sendRedirect(response.encodeRedirectURL(request.getHeader("from")));
 	}
 }

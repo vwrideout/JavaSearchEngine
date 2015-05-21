@@ -7,7 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * Jetty Servlet implementing account creation for new users.
+ * On successful account creation, stores the new username/password in the cs212 MySQL database,
+ * logs the user in and returns them to the search page.
+ * @author Vincent
+ *
+ */
 public class NewUserServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("text/html");

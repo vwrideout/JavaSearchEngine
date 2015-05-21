@@ -7,7 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
+/**
+ * Jetty Servlet that implements the storing of a users search history. 
+ * Allows the user to view and clear that history.
+ * @author Vincent
+ *
+ */
 public class HistoryServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		response.setContentType("text/html");

@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Main Jetty Servlet for my search engine. Supports searching, user accounts, viewing and clearing 
+ * user history, visited links, and favorite links. Also suggests queries based on other users' searches.
+ * @author Vincent Rideout
+ *
+ */
 public class SearchServlet extends HttpServlet{
 	private ConcurrentInvertedIndex index;
 	
@@ -94,13 +100,18 @@ public class SearchServlet extends HttpServlet{
 		for(DocumentResult result: results){
 			String link = result.getName();
 			out.println("<br><a href=\"visited?link=" + link + "\">" + link + "</a>");
-			out.println("<a href=\"favorite?link=" + link + "\">  [Favorite]</a>");
+			out.println("<a href=\"favorite?link=" + link + "&query=" + query + "\">  [Favorite]</a>");
 		}
 		out.println("<br>");
 		suggestQueries(username, out);
 		out.println("</body></html>");
 	}
 	
+	/**
+	 * Helper function for generating and displaying up to five suggested queries.
+	 * @param username - will not suggest queries already made by this user.
+	 * @param out - PrintWriter object to display information.
+	 */
 	private void suggestQueries(String username, PrintWriter out){
 		ResultSet queries = MyJDBC.executeJDBCQuery("SELECT query FROM querycounts ORDER BY count DESC");
 		int queriesprinted = 0;
