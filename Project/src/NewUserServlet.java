@@ -38,7 +38,7 @@ public class NewUserServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		if(username == null || username.equals("") || password == null && password.equals("")){
+		if(username == null || username.equals("") || password == null || password.equals("")){
 			response.sendRedirect(response.encodeRedirectURL("/newuser?status=bad"));
 			return;
 		}

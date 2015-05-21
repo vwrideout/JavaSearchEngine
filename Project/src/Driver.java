@@ -72,8 +72,10 @@ public class Driver {
 			handler.addServlet(LogoutServlet.class, "/logout");
 			handler.addServlet(NewUserServlet.class, "/newuser");
 			handler.addServlet(HistoryServlet.class, "/history");
+			handler.addServlet(VisitedServlet.class, "/visited");
+			handler.addServlet(FavoriteServlet.class, "/favorite");
+			handler.addServlet(ChangePasswordServlet.class, "/changepassword");
 			server.start();
-			server.join();
 		}
 	}
 	

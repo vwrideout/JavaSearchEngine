@@ -17,19 +17,19 @@ public class HistoryServlet extends HttpServlet{
 		if(request.getParameter("clear") != null && request.getParameter("clear").equals("true")){
 			MyJDBC.executeJDBCUpdate("DELETE FROM history WHERE username=\"" + username + "\";");
 		}
-		ResultSet results = MyJDBC.executeJDBCQuery("SELECT url FROM history WHERE username=\"" + username + "\";");
+		ResultSet results = MyJDBC.executeJDBCQuery("SELECT query FROM history WHERE username=\"" + username + "\";");
 		
 		PrintWriter out = response.getWriter();
-		out.println("<html><title>Login</title><body>");
+		out.println("<html><title>History</title><body>");
 		out.println("Search History for " + username + ":<br>");
 		try {
 			if(!results.last()){
 				out.println("No searches in history<br>");
 			}
 			else{
-				out.println("<a href=\"search?query=" + results.getString("url") + "\" method=\"post\">" + results.getString("url") + "</a><br>");
+				out.println("<a href=\"search?query=" + results.getString("query") + "\" method=\"post\">" + results.getString("query") + "</a><br>");
 				while(results.previous()){
-					out.println("<a href=\"search?query=" + results.getString("url") + "\" method=\"post\">" + results.getString("url") + "</a><br>");
+					out.println("<a href=\"search?query=" + results.getString("query") + "\" method=\"post\">" + results.getString("query") + "</a><br>");
 				}
 			}
 			out.println("-----------------<br>");

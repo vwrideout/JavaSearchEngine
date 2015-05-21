@@ -37,3 +37,6 @@
 /LogoutServlet.class
 /NewUserServlet.class
 /HistoryServlet.class
+/VisitedServlet.class
+/FavoriteServlet.class
+/ChangePasswordServlet.class
